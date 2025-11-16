@@ -1,0 +1,18 @@
+Source: openmediavault-snapraid-aio
+Section: net
+XB-Plugin-Section: filesystems
+Priority: optional
+Maintainer: OpenMediaVault Plugin Developers <plugins@omv-extras.org>
+Build-Depends: debhelper-compat (= 14), dh-sequence-single-binary
+Standards-Version: 4.7.2
+
+Package: openmediavault-snapraid-aio
+Architecture: all
+Depends: bc,
+         curl,
+         jq,
+         openmediavault (>= 8),
+         python3-markdown,
+         snapraid (>= 12)
+Description: snapraid-aio plugin for OpenMediaVault.
+ Plugin to configure snapraid-aio script.

@@ -1,0 +1,197 @@
+{
+  "type": "config",
+  "id": "conf.service.snapraidaio",
+  "title": "SnapRAID AIO",
+  "queryinfo": {
+    "xpath": "//services/snapraidaio",
+    "iterable": false
+  },
+  "properties": {
+    "email_address": {
+      "type": "string",
+      "default": ""
+    },
+    "from_email_address": {
+      "type": "string",
+      "default": ""
+    },
+    "check_updates": {
+      "type": "boolean",
+      "default": true
+    },
+    "healthchecks": {
+      "type": "boolean",
+      "default": false
+    },
+    "healthchecks_id": {
+      "type": "string",
+      "default": ""
+    },
+    "healthchecks_url": {
+      "type": "string",
+      "default": "https://hc-ping.com/"
+    },
+    "telegram": {
+      "type": "boolean",
+      "default": false
+    },
+    "telegram_token": {
+      "type": "string",
+      "default": ""
+    },
+    "telegram_chat_id": {
+      "type": "string",
+      "default": ""
+    },
+    "discord": {
+      "type": "boolean",
+      "default": false
+    },
+    "discord_webhook_url": {
+      "type": "string",
+      "default": ""
+    },
+    "hook_notification": {
+      "type": "string",
+      "default": ""
+    },
+    "del_threshold": {
+      "type": "integer",
+      "default": 500
+    },
+    "up_threshold": {
+      "type": "integer",
+      "default": 500
+    },
+    "add_del_threshold": {
+      "type": "number",
+      "default": 0
+    },
+    "sync_warn_threshold": {
+      "type": "integer",
+      "default": -1
+    },
+    "scrub_percent": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 5
+    },
+    "scrub_age": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 10
+    },
+    "scrub_new": {
+      "type": "boolean",
+      "default": false
+    },
+    "scrub_delayed_run": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "prehash": {
+      "type": "boolean",
+      "default": true
+    },
+    "force_zero": {
+      "type": "boolean",
+      "default": false
+    },
+    "spindown": {
+      "type": "boolean",
+      "default": false
+    },
+    "verbosity": {
+      "type": "boolean",
+      "default": false
+    },
+    "retention_days": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "snapraid_log_dir": {
+      "type": "string",
+      "default": "$HOME"
+    },
+    "smart_log": {
+      "type": "boolean",
+      "default": true
+    },
+    "smart_log_notify": {
+      "type": "boolean",
+      "default": false
+    },
+    "snap_status": {
+      "type": "boolean",
+      "default": false
+    },
+    "snap_status_notify": {
+      "type": "boolean",
+      "default": false
+    },
+    "snapraid_conf": {
+      "type": "string",
+      "default": "/etc/snapraid.conf"
+    },
+    "manage_services": {
+      "type": "boolean",
+      "default": false
+    },
+    "docker_mode": {
+      "type": "integer",
+      "enum": [
+        1,
+        2
+      ],
+      "default": 1
+    },
+    "docker_local": {
+      "type": "boolean",
+      "default": false
+    },
+    "services": {
+      "type": "string",
+      "default": "container1 container2 container3"
+    },
+    "docker_remote": {
+      "type": "boolean",
+      "default": false
+    },
+    "docker_user": {
+      "type": "string",
+      "default": ""
+    },
+    "docker_host_services": {
+      "type": "string",
+      "default": "'HOSTIP1:container1 container2 container3' 'HOSTIP2:container1 container2 container3 container4'"
+    },
+    "docker_delay": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "custom_hook": {
+      "type": "boolean",
+      "default": false
+    },
+    "before_hook_name": {
+      "type": "string",
+      "default": ""
+    },
+    "before_hook_cmd": {
+      "type": "string",
+      "default": ""
+    },
+    "after_hook_name": {
+      "type": "string",
+      "default": ""
+    },
+    "after_hook_cmd": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

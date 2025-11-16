@@ -1,0 +1,246 @@
+version: "1.0"
+type: component
+data:
+  name: omv-services-snapraidaio-form-page
+  type: formPage
+  config:
+    request:
+      service: SnapRaidAio
+      get:
+        method: get
+      post:
+        method: set
+    fields:
+      - type: divider
+        title: _("Notification settings")
+      - type: textInput
+        name: email_address
+        label: _("Destination e-mail address")
+        hint: _("Leave empty to disable e-mail notification.")
+      - type: textInput
+        name: from_email_address
+        label: _("Sender e-mail address")
+        value: ""
+      - type: checkbox
+        name: check_updates
+        label: _("Check for script updates")
+        value: true
+
+      - type: checkbox
+        name: healthchecks
+        label: _("Use Healthchecks.io")
+        value: false
+      - type: textInput
+        name: healthchecks_id
+        label: _("Healthchecks UUID")
+        value: ""
+        hint: _("Only UUID, not full URL.")
+      - type: textInput
+        name: healthchecks_url
+        label: _("Healthchecks URL")
+        value: "https://hc-ping.com/"
+
+      - type: checkbox
+        name: telegram
+        label: _("Use Telegram")
+        value: false
+      - type: textInput
+        name: telegram_token
+        label: _("Telegram bot token")
+        value: ""
+      - type: textInput
+        name: telegram_chat_id
+        label: _("Telegram chat ID")
+        value: ""
+
+      - type: checkbox
+        name: discord
+        label: _("Use Discord")
+        value: false
+      - type: textInput
+        name: discord_webhook_url
+        label: _("Discord webhook URL")
+        value: ""
+
+      - type: textArea
+        name: hook_notification
+        label: _("Custom notification hook")
+        monospaced: true
+        rows: 2
+        hint: _("Script or command to call instead of default mail. SUBJECT and BODY are passed as parameters.")
+
+      - type: divider
+        title: _("Thresholds and scrub settings")
+      - type: numberInput
+        name: del_threshold
+        label: _("Delete threshold")
+        value: 500
+        min: 0
+      - type: numberInput
+        name: up_threshold
+        label: _("Update threshold")
+        value: 500
+        min: 0
+      - type: numberInput
+        name: add_del_threshold
+        label: _("Add/Delete ratio threshold")
+        value: 0
+        min: 0
+        step: 0.01
+        hint: _("0 disables. Example&colon; 0.76 = 3800/5000 added/deleted.")
+      - type: numberInput
+        name: sync_warn_threshold
+        label: _("Sync warning threshold")
+        value: -1
+        hint: _("0=always force sync, -1=never force sync, >0=number of warnings before forced sync.")
+
+      - type: numberInput
+        name: scrub_percent
+        label: _("Scrub percent")
+        value: 5
+        min: 0
+        max: 100
+      - type: numberInput
+        name: scrub_age
+        label: _("Scrub age (days)")
+        value: 10
+        min: 0
+      - type: checkbox
+        name: scrub_new
+        label: _("Scrub new blocks after sync")
+        value: false
+      - type: numberInput
+        name: scrub_delayed_run
+        label: _("Scrub every N runs")
+        value: 0
+        min: 0
+        hint: _("0 = scrub every time.")
+
+      - type: checkbox
+        name: prehash
+        label: _("Pre-hash data")
+        value: true
+      - type: checkbox
+        name: force_zero
+        label: _("Force zero-sized file sync")
+        value: false
+      - type: checkbox
+        name: spindown
+        label: _("Use hd-idle spindown")
+        value: false
+
+      - type: checkbox
+        name: verbosity
+        label: _("Verbose output in notification")
+        value: false
+
+      - type: numberInput
+        name: retention_days
+        label: _("Log retention (days)")
+        value: 0
+        min: 0
+      - type: textInput
+        name: snapraid_log_dir
+        label: _("SnapRAID log directory")
+        value: ""
+
+      - type: checkbox
+        name: smart_log
+        label: _("Log SMART info")
+        value: true
+      - type: checkbox
+        name: smart_log_notify
+        label: _("Send SMART log via Telegram/Discord")
+        value: false
+
+      - type: checkbox
+        name: snap_status
+        label: _("Run 'snapraid status'")
+        value: false
+      - type: checkbox
+        name: snap_status_notify
+        label: _("Send 'snapraid status' via Telegram/Discord")
+        value: false
+
+      - type: textInput
+        name: snapraid_conf
+        label: _("SnapRAID configuration file")
+        value: "/etc/snapraid.conf"
+
+      - type: divider
+        title: _("Docker and service management")
+      - type: checkbox
+        name: manage_services
+        label: _("Manage Docker containers / services")
+        value: false
+      - type: select
+        name: docker_mode
+        label: _("Docker mode")
+        value: 1
+        options:
+          - value: 1
+            label: _("Pause / unpause")
+          - value: 2
+            label: _("Stop / restart")
+      - type: checkbox
+        name: docker_local
+        label: _("Manage local Docker containers")
+        value: false
+      - type: textInput
+        name: services
+        label: _("Local container list")
+        value: ""
+        hint: _("Space-separated container names or IDs.")
+
+      - type: checkbox
+        name: docker_remote
+        label: _("Manage remote Docker containers")
+        value: false
+      - type: textInput
+        name: docker_user
+        label: _("Remote Docker SSH user")
+        value: ""
+      - type: textArea
+        name: docker_host_services
+        label: _("Remote Docker hosts and containers")
+        rows: 4
+        monospaced: true
+        hint: _("Example&colon; '192.168.0.125:code-server portainer plex'")
+      - type: numberInput
+        name: docker_delay
+        label: _("Delay between remote Docker commands (seconds)")
+        value: 0
+        min: 0
+
+      - type: divider
+        title: _("Custom hooks")
+      - type: checkbox
+        name: custom_hook
+        label: _("Enable custom hooks")
+        value: false
+
+      - type: textInput
+        name: before_hook_name
+        label: _("Before hook name")
+        value: ""
+      - type: textArea
+        name: before_hook_cmd
+        label: _("Before hook command")
+        monospaced: true
+        rows: 2
+
+      - type: textInput
+        name: after_hook_name
+        label: _("After hook name")
+        value: ""
+      - type: textArea
+        name: after_hook_cmd
+        label: _("After hook command")
+        monospaced: true
+        rows: 2
+    buttons:
+      - template: submit
+      - template: cancel
+        execute:
+          type: url
+          url: "/services/snapraidaio"

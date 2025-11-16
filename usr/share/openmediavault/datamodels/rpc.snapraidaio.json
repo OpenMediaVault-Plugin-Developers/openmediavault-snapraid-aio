@@ -1,0 +1,209 @@
+[
+  {
+    "type": "rpc",
+    "id": "rpc.snapraidaio.set",
+    "params": {
+      "type": "object",
+      "properties": {
+        "email_address": {
+          "type": "string",
+          "required": true
+        },
+        "from_email_address": {
+          "type": "string",
+          "required": true
+        },
+        "check_updates": {
+          "type": "boolean",
+          "required": true
+        },
+        "healthchecks": {
+          "type": "boolean",
+          "required": true
+        },
+        "healthchecks_id": {
+          "type": "string",
+          "required": true
+        },
+        "healthchecks_url": {
+          "type": "string",
+          "required": true
+        },
+        "telegram": {
+          "type": "boolean",
+          "required": true
+        },
+        "telegram_token": {
+          "type": "string",
+          "required": true
+        },
+        "telegram_chat_id": {
+          "type": "string",
+          "required": true
+        },
+        "discord": {
+          "type": "boolean",
+          "required": true
+        },
+        "discord_webhook_url": {
+          "type": "string",
+          "required": true
+        },
+        "hook_notification": {
+          "type": "string",
+          "required": true
+        },
+        "del_threshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "required": true
+        },
+        "up_threshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "required": true
+        },
+        "add_del_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "required": true
+        },
+        "sync_warn_threshold": {
+          "type": "integer",
+          "minimum": -1,
+          "maximum": 65535,
+          "required": true
+        },
+        "scrub_percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "required": true
+        },
+        "scrub_age": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 365,
+          "required": true
+        },
+        "scrub_new": {
+          "type": "boolean",
+          "required": true
+        },
+        "scrub_delayed_run": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "required": true
+        },
+        "prehash": {
+          "type": "boolean",
+          "required": true
+        },
+        "force_zero": {
+          "type": "boolean",
+          "required": true
+        },
+        "spindown": {
+          "type": "boolean",
+          "required": true
+        },
+        "verbosity": {
+          "type": "boolean",
+          "required": true
+        },
+        "retention_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3650,
+          "required": true
+        },
+        "snapraid_log_dir": {
+          "type": "string",
+          "required": true
+        },
+        "smart_log": {
+          "type": "boolean",
+          "required": true
+        },
+        "smart_log_notify": {
+          "type": "boolean",
+          "required": true
+        },
+        "snap_status": {
+          "type": "boolean",
+          "required": true
+        },
+        "snap_status_notify": {
+          "type": "boolean",
+          "required": true
+        },
+        "snapraid_conf": {
+          "type": "string",
+          "required": true
+        },
+        "manage_services": {
+          "type": "boolean",
+          "required": true
+        },
+        "docker_mode": {
+          "type": "integer",
+          "enum": [
+            1,
+            2
+          ],
+          "required": true
+        },
+        "docker_local": {
+          "type": "boolean",
+          "required": true
+        },
+        "services": {
+          "type": "string",
+          "required": true
+        },
+        "docker_remote": {
+          "type": "boolean",
+          "required": true
+        },
+        "docker_user": {
+          "type": "string",
+          "required": true
+        },
+        "docker_host_services": {
+          "type": "string",
+          "required": true
+        },
+        "docker_delay": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400,
+          "required": true
+        },
+        "custom_hook": {
+          "type": "boolean",
+          "required": true
+        },
+        "before_hook_name": {
+          "type": "string",
+          "required": true
+        },
+        "before_hook_cmd": {
+          "type": "string",
+          "required": true
+        },
+        "after_hook_name": {
+          "type": "string",
+          "required": true
+        },
+        "after_hook_cmd": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+  }
+]

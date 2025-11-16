@@ -1,0 +1,7 @@
+version: "1.0"
+type: navigation-item
+data:
+  path: "services.snapraidaio"
+  text: _("SnapRaid AIO")
+  icon: "tune"
+  url: "/services/snapraidaio"

@@ -1,0 +1,8 @@
+version: "1.0"
+type: route
+data:
+  url: "/services/snapraidaio"
+  title: _("SnapRAID AIO")
+  editing: true
+  notificationTitle: _("Updated SnapRaid AIO settings.")
+  component: omv-services-snapraidaio-form-page

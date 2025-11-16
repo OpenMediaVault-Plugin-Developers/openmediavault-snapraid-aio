@@ -1,0 +1,101 @@
+# {{ pillar['headers']['multiline'] }}
+
+CONFIG_VERSION="3.3.2"
+
+######################
+#   USER VARIABLES   #
+######################
+
+### NOTIFICATION SETTINGS ###
+
+EMAIL_ADDRESS="{{ config.email_address | default('', true) }}"
+FROM_EMAIL_ADDRESS="{{ config.from_email_address | default('', true) }}"
+
+CHECK_UPDATES={{ 1 if (config.check_updates | default(True) | to_bool) else 0 }}
+
+HEALTHCHECKS={{ 1 if (config.healthchecks | default(False) | to_bool) else 0 }}
+HEALTHCHECKS_ID="{{ config.healthchecks_id | default('', true) }}"
+HEALTHCHECKS_URL="{{ config.healthchecks_url | default('https://hc-ping.com/', true) }}"
+
+TELEGRAM={{ 1 if (config.telegram | default(False) | to_bool) else 0 }}
+TELEGRAM_TOKEN="{{ config.telegram_token | default('', true) }}"
+TELEGRAM_CHAT_ID="{{ config.telegram_chat_id | default('', true) }}"
+
+DISCORD={{ 1 if (config.discord | default(False) | to_bool) else 0 }}
+DISCORD_WEBHOOK_URL="{{ config.discord_webhook_url | default('', true) }}"
+
+HOOK_NOTIFICATION="{{ config.hook_notification | default('', true) }}"
+
+### SCRIPT AND SNAPRAID SETTINGS ###
+
+DEL_THRESHOLD={{ config.del_threshold | default(500) }}
+UP_THRESHOLD={{ config.up_threshold | default(500) }}
+ADD_DEL_THRESHOLD={{ config.add_del_threshold | default(0) }}
+
+SYNC_WARN_THRESHOLD={{ config.sync_warn_threshold | default(-1) }}
+
+SCRUB_PERCENT={{ config.scrub_percent | default(5) }}
+SCRUB_AGE={{ config.scrub_age | default(10) }}
+
+SCRUB_NEW={{ 1 if (config.scrub_new | default(False) | to_bool) else 0 }}
+SCRUB_DELAYED_RUN={{ config.scrub_delayed_run | default(0) }}
+
+PREHASH={{ 1 if (config.prehash | default(True) | to_bool) else 0 }}
+FORCE_ZERO={{ 1 if (config.force_zero | default(False) | to_bool) else 0 }}
+SPINDOWN={{ 1 if (config.spindown | default(False) | to_bool) else 0 }}
+
+VERBOSITY={{ 1 if (config.verbosity | default(False) | to_bool) else 0 }}
+
+RETENTION_DAYS={{ config.retention_days | default(0) }}
+SNAPRAID_LOG_DIR="{{ config.snapraid_log_dir | default('$HOME', true) }}"
+
+SMART_LOG={{ 1 if (config.smart_log | default(True) | to_bool) else 0 }}
+SMART_LOG_NOTIFY={{ 1 if (config.smart_log_notify | default(False) | to_bool) else 0 }}
+
+SNAP_STATUS={{ 1 if (config.snap_status | default(False) | to_bool) else 0 }}
+SNAP_STATUS_NOTIFY={{ 1 if (config.snap_status_notify | default(False) | to_bool) else 0 }}
+
+SNAPRAID_CONF="{{ config.snapraid_conf | default('/etc/snapraid.conf', true) }}"
+
+### DOCKER CONTAINERS MANAGEMENT ###
+
+MANAGE_SERVICES={{ 1 if (config.manage_services | default(False) | to_bool) else 0 }}
+DOCKER_MODE={{ config.docker_mode | default(1) }}
+
+DOCKER_LOCAL={{ 1 if (config.docker_local | default(False) | to_bool) else 0 }}
+SERVICES="{{ config.services | default('container1 container2 container3', true) }}"
+
+DOCKER_REMOTE={{ 1 if (config.docker_remote | default(False) | to_bool) else 0 }}
+DOCKER_USER="{{ config.docker_user | default('', true) }}"
+# Keep this as a single string; script already expects a bash array definition
+DOCKER_HOST_SERVICES=({{ config.docker_host_services | default("'HOSTIP1:container1 container2 container3' 'HOSTIP2:container1 container2 container3 container4'", true) }})
+DOCKER_DELAY={{ config.docker_delay | default(0) }}
+
+### CUSTOM HOOKS ###
+
+CUSTOM_HOOK={{ 1 if (config.custom_hook | default(False) | to_bool) else 0 }}
+
+BEFORE_HOOK_NAME="{{ config.before_hook_name | default('', true) }}"
+BEFORE_HOOK_CMD="{{ config.before_hook_cmd | default('', true) }}"
+
+AFTER_HOOK_NAME="{{ config.after_hook_name | default('', true) }}"
+AFTER_HOOK_CMD="{{ config.after_hook_cmd | default('', true) }}"
+
+####################### SYSTEM CONFIGURATION #######################
+# (These you probably keep hard-coded here, but you *could*
+#  also move them into the model if you really want.)
+
+SNAPRAID_BIN="/usr/bin/snapraid"
+MAIL_BIN="/usr/bin/mailx"
+
+CHK_FAIL=0
+DO_SYNC=0
+EMAIL_SUBJECT_PREFIX="(SnapRAID on $(hostname))"
+SERVICES_STOPPED=0
+SYNC_WARN_FILE="$CURRENT_DIR/snapRAID.warnCount"
+SCRUB_COUNT_FILE="$CURRENT_DIR/snapRAID.scrubCount"
+TMP_OUTPUT="/tmp/snapRAID.out"
+SNAPRAID_LOG="/var/log/snapraid.log"
+SECONDS=0
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
