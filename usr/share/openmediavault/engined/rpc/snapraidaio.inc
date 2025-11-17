@@ -23,13 +23,13 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
 {
     public function getName()
     {
-        return 'SnapRaidAio';
+        return "SnapRaidAio";
     }
 
     public function initialize()
     {
-        $this->registerMethod('get');
-        $this->registerMethod('set');
+        $this->registerMethod("get");
+        $this->registerMethod("set");
     }
 
     public function get($params, $context)

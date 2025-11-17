@@ -29,6 +29,30 @@
           "type": "string",
           "required": true
         },
+        "apprise": {
+          "type": "boolean",
+          "required": true
+        },
+        "apprise_url": {
+          "type": "string",
+          "required": true
+        },
+        "apprise_attach": {
+          "type": "boolean",
+          "required": true
+        },
+        "apprise_email": {
+          "type": "boolean",
+          "required": true
+        },
+        "apprise_email_attach": {
+          "type": "boolean",
+          "required": true
+        },
+        "apprise_email_url": {
+          "type": "string",
+          "required": true
+        },
         "telegram": {
           "type": "boolean",
           "required": true
@@ -145,6 +169,10 @@
           "type": "string",
           "required": true
         },
+        "ignore_pattern": {
+          "type": "string",
+          "required": true
+        },
         "manage_services": {
           "type": "boolean",
           "required": true
@@ -201,6 +229,10 @@
         },
         "after_hook_cmd": {
           "type": "string",
+          "required": true
+        },
+        "execute_before_spindown": {
+          "type": "boolean",
           "required": true
         }
       }

@@ -1,6 +1,6 @@
 # {{ pillar['headers']['multiline'] }}
 
-CONFIG_VERSION="3.3.2"
+CONFIG_VERSION="3.4"
 
 ######################
 #   USER VARIABLES   #
@@ -16,6 +16,14 @@ CHECK_UPDATES={{ 1 if (config.check_updates | default(True) | to_bool) else 0 }}
 HEALTHCHECKS={{ 1 if (config.healthchecks | default(False) | to_bool) else 0 }}
 HEALTHCHECKS_ID="{{ config.healthchecks_id | default('', true) }}"
 HEALTHCHECKS_URL="{{ config.healthchecks_url | default('https://hc-ping.com/', true) }}"
+
+APPRISE={{ 1 if (config.apprise | default(False) | to_bool) else 0 }}
+APPRISE_URL="{{ config.apprise_url | default('', true) }}"
+APPRISE_ATTACH={{ 1 if (config.apprise_attach | default(False) | to_bool) else 0 }}
+
+APPRISE_EMAIL={{ 1 if (config.apprise_email | default(False) | to_bool) else 0 }}
+APPRISE_EMAIL_ATTACH={{ 1 if (config.apprise_email_attach | default(False) | to_bool) else 0 }}
+APPRISE_EMAIL_URL='{{ config.apprise_email_url | default('', true) }}'
 
 TELEGRAM={{ 1 if (config.telegram | default(False) | to_bool) else 0 }}
 TELEGRAM_TOKEN="{{ config.telegram_token | default('', true) }}"
@@ -56,6 +64,7 @@ SNAP_STATUS={{ 1 if (config.snap_status | default(False) | to_bool) else 0 }}
 SNAP_STATUS_NOTIFY={{ 1 if (config.snap_status_notify | default(False) | to_bool) else 0 }}
 
 SNAPRAID_CONF="{{ config.snapraid_conf | default('/etc/snapraid.conf', true) }}"
+IGNORE_PATTERN="{{ config.ignore_pattern | default('', true) }}"
 
 ### DOCKER CONTAINERS MANAGEMENT ###
 
@@ -80,6 +89,7 @@ BEFORE_HOOK_CMD="{{ config.before_hook_cmd | default('', true) }}"
 
 AFTER_HOOK_NAME="{{ config.after_hook_name | default('', true) }}"
 AFTER_HOOK_CMD="{{ config.after_hook_cmd | default('', true) }}"
+EXECUTE_BEFORE_SPINDOWN={{ 1 if (config.execute_before_spindown | default(False) | to_bool) else 0 }}
 
 ####################### SYSTEM CONFIGURATION #######################
 # (These you probably keep hard-coded here, but you *could*

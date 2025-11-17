@@ -31,6 +31,30 @@
       "type": "string",
       "default": "https://hc-ping.com/"
     },
+    "apprise": {
+      "type": "boolean",
+      "default": false
+    },
+    "apprise_url": {
+      "type": "string",
+      "default": ""
+    },
+    "apprise_attach": {
+      "type": "boolean",
+      "default": false
+    },
+    "apprise_email": {
+      "type": "boolean",
+      "default": false
+    },
+    "apprise_email_attach": {
+      "type": "boolean",
+      "default": false
+    },
+    "apprise_email_url": {
+      "type": "string",
+      "default": ""
+    },
     "telegram": {
       "type": "boolean",
       "default": false
@@ -136,6 +160,10 @@
       "type": "string",
       "default": "/etc/snapraid.conf"
     },
+    "ignore_pattern": {
+      "type": "string",
+      "default": ""
+    },
     "manage_services": {
       "type": "boolean",
       "default": false
@@ -192,6 +220,10 @@
     "after_hook_cmd": {
       "type": "string",
       "default": ""
+    },
+    "execute_before_spindown": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

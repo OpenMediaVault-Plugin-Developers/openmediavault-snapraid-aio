@@ -41,6 +41,31 @@ data:
         value: "https://hc-ping.com/"
 
       - type: checkbox
+        name: apprise
+        label: _("Use Apprise")
+        value: false
+      - type: textInput
+        name: apprise_url
+        label: _("Apprise URL")
+        value: ""
+      - type: checkbox
+        name: apprise_attach
+        label: _("Attach report")
+        value: false
+      - type: checkbox
+        name: apprise_email
+        label: _("Send email")
+        value: false
+      - type: checkbox
+        name: apprise_email_attach
+        label: _("Attach report")
+        value: false
+      - type: textInput
+        name: apprise_email_url
+        label: _("Apprise Email URL")
+        value: ""
+
+      - type: checkbox
         name: telegram
         label: _("Use Telegram")
         value: false
@@ -166,6 +191,10 @@ data:
         name: snapraid_conf
         label: _("SnapRAID configuration file")
         value: "/etc/snapraid.conf"
+      - type: textInput
+        name: ignore_pattern
+        label: _("Ignore pattern")
+        value: ""
 
       - type: divider
         title: _("Docker and service management")
@@ -238,6 +267,11 @@ data:
         label: _("After hook command")
         monospaced: true
         rows: 2
+
+      - type: checkbox
+        name: execute_before_spindown
+        label: _("Execute before spindown")
+        value: false
     buttons:
       - template: submit
       - template: cancel
