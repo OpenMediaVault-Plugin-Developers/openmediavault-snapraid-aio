@@ -206,21 +206,28 @@ data:
         name: docker_mode
         label: _("Docker mode")
         value: 1
-        options:
-          - value: 1
-            label: _("Pause / unpause")
-          - value: 2
-            label: _("Stop / restart")
+        store:
+          data:
+            - [1, _("Pause / unpause")]
+            - [2, _("Stop / restart")]
       - type: checkbox
         name: docker_local
         label: _("Manage local Docker containers")
         value: false
-      - type: textInput
+      - type: select
         name: services
         label: _("Local container list")
-        value: ""
-        hint: _("Space-separated container names or IDs.")
-
+        multiple: true
+        valueField: name
+        textField: name
+        store:
+          proxy:
+            service: SnapRaidAio
+            get:
+              method: getContainers
+          sorters:
+            dir: asc
+            prop: name
       - type: checkbox
         name: docker_remote
         label: _("Manage remote Docker containers")
@@ -234,6 +241,7 @@ data:
         label: _("Remote Docker hosts and containers")
         rows: 4
         monospaced: true
+        value: ""
         hint: _("Example&colon; '192.168.0.125:code-server portainer plex'")
       - type: numberInput
         name: docker_delay
@@ -257,6 +265,7 @@ data:
         label: _("Before hook command")
         monospaced: true
         rows: 2
+        value: ""
 
       - type: textInput
         name: after_hook_name
@@ -267,6 +276,7 @@ data:
         label: _("After hook command")
         monospaced: true
         rows: 2
+        value: ""
 
       - type: checkbox
         name: execute_before_spindown
