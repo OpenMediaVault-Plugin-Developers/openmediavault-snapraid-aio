@@ -81,11 +81,6 @@ if ! omv_config_exists "${SERVICE_XPATH}"; then
     omv_config_add_key "${SERVICE_XPATH}" "docker_local" "0"
     omv_config_add_key "${SERVICE_XPATH}" "services" "container1 container2 container3"
 
-    omv_config_add_key "${SERVICE_XPATH}" "docker_remote" "0"
-    omv_config_add_key "${SERVICE_XPATH}" "docker_user" ""
-    omv_config_add_key "${SERVICE_XPATH}" "docker_host_services" "'HOSTIP1:container1 container2 container3' 'HOSTIP2:container1 container2 container3 container4'"
-    omv_config_add_key "${SERVICE_XPATH}" "docker_delay" "0"
-
     # Custom hooks
     omv_config_add_key "${SERVICE_XPATH}" "custom_hook" "0"
 

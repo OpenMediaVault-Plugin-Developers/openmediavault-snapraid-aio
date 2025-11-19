@@ -74,12 +74,6 @@ DOCKER_MODE={{ config.docker_mode | default(1) }}
 DOCKER_LOCAL={{ 1 if (config.docker_local | default(False) | to_bool) else 0 }}
 SERVICES="{{ config.services | default('', true) | replace(",", " ") }}"
 
-DOCKER_REMOTE={{ 1 if (config.docker_remote | default(False) | to_bool) else 0 }}
-DOCKER_USER="{{ config.docker_user | default('', true) }}"
-# Keep this as a single string; script already expects a bash array definition
-DOCKER_HOST_SERVICES=({{ config.docker_host_services | default("'HOSTIP1:container1 container2 container3' 'HOSTIP2:container1 container2 container3 container4'", true) }})
-DOCKER_DELAY={{ config.docker_delay | default(0) }}
-
 ### CUSTOM HOOKS ###
 
 CUSTOM_HOOK={{ 1 if (config.custom_hook | default(False) | to_bool) else 0 }}

@@ -182,24 +182,7 @@
     },
     "services": {
       "type": "string",
-      "default": "container1 container2 container3"
-    },
-    "docker_remote": {
-      "type": "boolean",
-      "default": false
-    },
-    "docker_user": {
-      "type": "string",
       "default": ""
-    },
-    "docker_host_services": {
-      "type": "string",
-      "default": "'HOSTIP1:container1 container2 container3' 'HOSTIP2:container1 container2 container3 container4'"
-    },
-    "docker_delay": {
-      "type": "integer",
-      "minimum": 0,
-      "default": 0
     },
     "custom_hook": {
       "type": "boolean",

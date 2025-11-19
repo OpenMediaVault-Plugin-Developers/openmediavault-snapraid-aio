@@ -228,26 +228,6 @@ data:
           sorters:
             dir: asc
             prop: name
-      - type: checkbox
-        name: docker_remote
-        label: _("Manage remote Docker containers")
-        value: false
-      - type: textInput
-        name: docker_user
-        label: _("Remote Docker SSH user")
-        value: ""
-      - type: textArea
-        name: docker_host_services
-        label: _("Remote Docker hosts and containers")
-        rows: 4
-        monospaced: true
-        value: ""
-        hint: _("Example&colon; '192.168.0.125:code-server portainer plex'")
-      - type: numberInput
-        name: docker_delay
-        label: _("Delay between remote Docker commands (seconds)")
-        value: 0
-        min: 0
 
       - type: divider
         title: _("Custom hooks")
