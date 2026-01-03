@@ -3,6 +3,4 @@ type: route
 data:
   url: "/services/snapraidaio"
   title: _("SnapRAID AIO")
-  editing: true
-  notificationTitle: _("Updated SnapRaid AIO settings.")
-  component: omv-services-snapraidaio-form-page
+  component: omv-services-snapraidaio-navigation-page

@@ -1,0 +1,6 @@
+version: "1.0"
+type: route
+data:
+  url: "/services/snapraidaio/configs"
+  title: _("Configs")
+  component: omv-services-snapraidaio-configs-datatable-page

@@ -15,16 +15,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-{% set config = salt['omv_conf.get']('conf.service.snapraidaio') %}
+{% set aio = salt['omv_conf.get']('conf.service.snapraidaio') %}
 
-configure_snapraidaio_con:
+{% if aio.enable | to_bool %}
+
+{% for conf in aio.configs.config %}
+
+configure_snapraidaio_{{ conf.uuid }}_conf:
   file.managed:
-    - name: /etc/snapraid-aio.conf
+    - name: /etc/snapraid-aio-{{ conf.uuid }}.conf
     - source:
       - salt://{{ tpldir }}/files/etc-snapraid-aio_conf.j2
     - template: jinja
     - context:
-        config: {{ config | json }}
+        config: {{ conf | json }}
     - user: root
     - group: root
     - mode: "0640"
+
+{% endfor %}
+
+{% else %}
+
+remove_snapraidaio_conf_files:
+  module.run:
+    - file.find:
+      - path: "/etc"
+      - iname: "snapraid-aio-*.conf"
+      - delete: "f"
+
+{% endif %}

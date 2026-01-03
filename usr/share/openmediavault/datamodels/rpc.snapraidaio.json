@@ -5,16 +5,26 @@
     "params": {
       "type": "object",
       "properties": {
-        "email_address": {
-          "type": "string",
-          "required": true
-        },
-        "from_email_address": {
-          "type": "string",
-          "required": true
-        },
-        "check_updates": {
+        "enable": {
           "type": "boolean",
+          "required": true
+        }
+      }
+    }
+  },
+  {
+    "type": "rpc",
+    "id": "rpc.snapraidaio.setconfig",
+    "params": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "format": "uuidv4",
+          "required": true
+        },
+        "snapraid_conf": {
+          "type": "string",
           "required": true
         },
         "healthchecks": {
@@ -50,26 +60,6 @@
           "required": true
         },
         "apprise_email_url": {
-          "type": "string",
-          "required": true
-        },
-        "telegram": {
-          "type": "boolean",
-          "required": true
-        },
-        "telegram_token": {
-          "type": "string",
-          "required": true
-        },
-        "telegram_chat_id": {
-          "type": "string",
-          "required": true
-        },
-        "discord": {
-          "type": "boolean",
-          "required": true
-        },
-        "discord_webhook_url": {
           "type": "string",
           "required": true
         },
@@ -165,10 +155,6 @@
           "type": "boolean",
           "required": true
         },
-        "snapraid_conf": {
-          "type": "string",
-          "required": true
-        },
         "ignore_pattern": {
           "type": "string",
           "required": true
@@ -190,8 +176,7 @@
           "required": true
         },
         "services": {
-          "type": "string",
-          "required": true
+          "type": "string"
         },
         "custom_hook": {
           "type": "boolean",

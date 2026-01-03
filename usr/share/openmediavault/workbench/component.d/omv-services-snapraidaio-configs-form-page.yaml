@@ -1,95 +1,122 @@
 version: "1.0"
 type: component
 data:
-  name: omv-services-snapraidaio-form-page
+  name: omv-services-snapraidaio-configs-form-page
   type: formPage
   config:
     request:
       service: SnapRaidAio
       get:
-        method: get
+        method: getConfig
+        params:
+          uuid: "{{ _routeParams.uuid }}"
       post:
-        method: set
+        method: setConfig
     fields:
+      - type: confObjUuid
+      - type: select
+        name: snapraid_conf
+        label: _("SnapRAID config file")
+        value: "/etc/snapraid.conf"
+        valueField: path
+        textField: path
+        store:
+          proxy:
+            service: SnapRaidAio
+            get:
+              method: enumerateConfigFiles
       - type: divider
-        title: _("Notification settings")
-      - type: textInput
-        name: email_address
-        label: _("Destination e-mail address")
-        hint: _("Leave empty to disable e-mail notification.")
-      - type: textInput
-        name: from_email_address
-        label: _("Sender e-mail address")
-        value: ""
-      - type: checkbox
-        name: check_updates
-        label: _("Check for script updates")
-        value: true
+        title: _("Healthchecks")
+      - type: container
+        fields:
+          - type: checkbox
+            name: healthchecks
+            label: _("Use Healthchecks.io")
+            value: false
+          - type: textInput
+            name: healthchecks_id
+            label: _("Healthchecks UUID")
+            value: ""
+            hint: _("Only UUID, not full URL.")
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: healthchecks
+          - type: textInput
+            name: healthchecks_url
+            label: _("Healthchecks URL")
+            value: "https://hc-ping.com/"
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: healthchecks
 
-      - type: checkbox
-        name: healthchecks
-        label: _("Use Healthchecks.io")
-        value: false
-      - type: textInput
-        name: healthchecks_id
-        label: _("Healthchecks UUID")
-        value: ""
-        hint: _("Only UUID, not full URL.")
-      - type: textInput
-        name: healthchecks_url
-        label: _("Healthchecks URL")
-        value: "https://hc-ping.com/"
+      - type: divider
+        title: _("Apprise Notifications")
+      - type: container
+        fields:
+          - type: checkbox
+            name: apprise
+            label: _("Use Apprise")
+            value: false
+          - type: textInput
+            name: apprise_url
+            label: _("Apprise URL")
+            value: ""
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: apprise
+          - type: checkbox
+            name: apprise_attach
+            label: _("Attach report")
+            value: false
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: apprise
 
-      - type: checkbox
-        name: apprise
-        label: _("Use Apprise")
-        value: false
-      - type: textInput
-        name: apprise_url
-        label: _("Apprise URL")
-        value: ""
-      - type: checkbox
-        name: apprise_attach
-        label: _("Attach report")
-        value: false
-      - type: checkbox
-        name: apprise_email
-        label: _("Send email")
-        value: false
-      - type: checkbox
-        name: apprise_email_attach
-        label: _("Attach report")
-        value: false
-      - type: textInput
-        name: apprise_email_url
-        label: _("Apprise Email URL")
-        value: ""
-
-      - type: checkbox
-        name: telegram
-        label: _("Use Telegram")
-        value: false
-      - type: textInput
-        name: telegram_token
-        label: _("Telegram bot token")
-        value: ""
-      - type: textInput
-        name: telegram_chat_id
-        label: _("Telegram chat ID")
-        value: ""
-
-      - type: checkbox
-        name: discord
-        label: _("Use Discord")
-        value: false
-      - type: textInput
-        name: discord_webhook_url
-        label: _("Discord webhook URL")
-        value: ""
+      - type: divider
+        title: _("Apprise Email Notifications")
+      - type: container
+        fields:
+          - type: checkbox
+            name: apprise_email
+            label: _("Send Apprise email")
+            value: false
+          - type: checkbox
+            name: apprise_email_attach
+            label: _("Attach report")
+            value: false
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: apprise_email
+          - type: textInput
+            name: apprise_email_url
+            label: _("Apprise Email URL")
+            value: ""
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: apprise_email
 
       - type: textArea
         name: hook_notification
         label: _("Custom notification hook")
+        value: ""
         monospaced: true
         rows: 2
         hint: _("Script or command to call instead of default mail. SUBJECT and BODY are passed as parameters.")
@@ -169,28 +196,40 @@ data:
         label: _("SnapRAID log directory")
         value: ""
 
-      - type: checkbox
-        name: smart_log
-        label: _("Log SMART info")
-        value: true
-      - type: checkbox
-        name: smart_log_notify
-        label: _("Send SMART log via Telegram/Discord")
-        value: false
+      - type: container
+        fields:
+          - type: checkbox
+            name: smart_log
+            label: _("Log SMART info")
+            value: true
+          - type: checkbox
+            name: smart_log_notify
+            label: _("Send SMART log via Telegram/Discord")
+            value: false
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: smart_log
 
-      - type: checkbox
-        name: snap_status
-        label: _("Run 'snapraid status'")
-        value: false
-      - type: checkbox
-        name: snap_status_notify
-        label: _("Send 'snapraid status' via Telegram/Discord")
-        value: false
+      - type: container
+        fields:
+          - type: checkbox
+            name: snap_status
+            label: _("Run 'snapraid status'")
+            value: false
+          - type: checkbox
+            name: snap_status_notify
+            label: _("Notify")
+            value: false
+            modifiers:
+              - type: disabled
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: snap_status
 
-      - type: textInput
-        name: snapraid_conf
-        label: _("SnapRAID configuration file")
-        value: "/etc/snapraid.conf"
       - type: textInput
         name: ignore_pattern
         label: _("Ignore pattern")
@@ -228,6 +267,12 @@ data:
           sorters:
             dir: asc
             prop: name
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: docker_local
 
       - type: divider
         title: _("Custom hooks")

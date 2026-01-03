@@ -2,6 +2,6 @@ version: "1.0"
 type: navigation-item
 data:
   path: "services.snapraidaio"
-  text: _("SnapRaid AIO")
-  icon: "tune"
+  text: _("SnapRAID-AIO")
+  icon: "mdi:archive-check-outline"
   url: "/services/snapraidaio"

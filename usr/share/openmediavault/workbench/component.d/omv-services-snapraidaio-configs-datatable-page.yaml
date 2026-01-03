@@ -1,0 +1,39 @@
+version: "1.0"
+type: component
+data:
+  name: omv-services-snapraidaio-configs-datatable-page
+  type: datatablePage
+  config:
+    autoReload: false
+    hasSearchField: true
+    stateId: 07e2a020-e8b9-11f0-997d-525400be629f
+    sorters:
+      - dir: asc
+        prop: name
+    store:
+      proxy:
+        service: SnapRaidAio
+        get:
+          method: getConfigList
+    columns:
+      - name: _("Config File")
+        prop: snapraid_conf
+        flexGrow: 1
+        sortable: true
+    actions:
+      - template: create
+        execute:
+          type: url
+          url: "/services/snapraidaio/configs/create"
+      - template: edit
+        execute:
+          type: url
+          url: "/services/snapraidaio/configs/edit/{{ _selected[0].uuid }}"
+      - template: delete
+        execute:
+          type: request
+          request:
+            service: SnapRaidAio
+            method: deleteConfig
+            params:
+              uuid: "{{ _selected[0].uuid }}"
