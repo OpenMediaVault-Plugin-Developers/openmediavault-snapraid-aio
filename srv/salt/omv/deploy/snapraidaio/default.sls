@@ -31,7 +31,7 @@ configure_snapraidaio_{{ conf.uuid }}_conf:
         config: {{ conf | json }}
     - user: root
     - group: root
-    - mode: "0640"
+    - mode: '0640'
 
 {% endfor %}
 
