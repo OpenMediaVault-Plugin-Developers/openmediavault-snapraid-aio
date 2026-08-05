@@ -1,5 +1,8 @@
 openmediavault-snapraid-aio (8.1) stable; urgency=low
 
+  * Comprehensive update bringing full SnapRAID AIO Script functionality to the
+    OMV plugin: per-config scheduling, live task output, notification channels,
+    Docker service management, and more.
   * Add per-config scheduling: Schedule button on datatable, each config
     gets its own cron entry; removes global enable toggle and Settings page
   * Add Tools submenu: Sync, Force Sync, Run Now, and Last Log actions;
@@ -24,11 +27,9 @@ openmediavault-snapraid-aio (8.1) stable; urgency=low
   * Move ignore_pattern field to end of Sync Thresholds section
   * Fix Docker container list sort order: sort alphabetically by name
   * Remove docker_delay field (remote Docker only, always disabled)
-  * Improve form labels and hints: add missing hints for scrub_new, smart_log,
-    snap_status, manage_services, services; fix healthchecks_id hint; clarify
-    snapraid_log_dir, execute_before_spindown label
-
- -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Wed, 16 Jul 2026 00:00:00 +0000
+  * Bundle SnapRAID AIO Script v3.4
+  
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Tue, 05 Aug 2026 00:00:00 +0000
 
 openmediavault-snapraid-aio (8.0) stable; urgency=low
 

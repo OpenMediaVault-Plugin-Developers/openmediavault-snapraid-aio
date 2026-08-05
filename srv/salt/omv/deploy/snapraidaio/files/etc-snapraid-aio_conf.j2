@@ -96,8 +96,6 @@ AFTER_HOOK_CMD="{{ config.after_hook_cmd | default('', true) }}"
 EXECUTE_BEFORE_SPINDOWN={{ 1 if (config.execute_before_spindown | default(False) | to_bool) else 0 }}
 
 ####################### SYSTEM CONFIGURATION #######################
-# (These you probably keep hard-coded here, but you *could*
-#  also move them into the model if you really want.)
 
 SNAPRAID_BIN="/usr/bin/snapraid"
 MAIL_BIN="/usr/bin/mailx"

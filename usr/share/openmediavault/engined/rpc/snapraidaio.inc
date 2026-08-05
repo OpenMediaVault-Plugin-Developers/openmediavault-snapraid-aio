@@ -217,7 +217,8 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
             $cmdArgs[] = "docker";
             $cmdArgs[] = "container";
             $cmdArgs[] = "ls";
-            $cmdArgs[] = '--format "{{.Image}},{{.Names}},{{.Status}}"';
+            $cmdArgs[] = '--format';
+            $cmdArgs[] = '{{.Image}},{{.Names}},{{.Status}}';
             $cmd = new \OMV\System\Process($cmdArgs);
             $cmd->execute($output, $exitStatus);
             foreach ($output as $cnt) {
