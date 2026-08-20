@@ -20,7 +20,7 @@ case "$1" in
         # Create the state directory for per-array warn/scrub counters.
         install -d -m 0750 -o root -g root /var/lib/snapraidaio
 
-        omv-salt deploy run snapraidaio
+        omv-salt deploy run --no-color snapraidaio || true
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
