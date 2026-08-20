@@ -8,29 +8,35 @@ CONFIG_VERSION="3.4"
 
 ### NOTIFICATION SETTINGS ###
 
-EMAIL_ADDRESS="{{ config.email_address | default('', true) }}"
-FROM_EMAIL_ADDRESS="{{ config.from_email_address | default('', true) }}"
+{% if config.email_notifications | default(False) | to_bool %}
+{% set _email_cfg = salt['omv_conf.get']('conf.system.notification.email') %}
+EMAIL_ADDRESS="{{ _email_cfg.get('primaryemail', '') if _email_cfg is mapping else '' }}"
+FROM_EMAIL_ADDRESS="{{ _email_cfg.get('sender', '') if _email_cfg is mapping else '' }}"
+{% else %}
+EMAIL_ADDRESS=""
+FROM_EMAIL_ADDRESS=""
+{% endif %}
 
-CHECK_UPDATES={{ 1 if (config.check_updates | default(True) | to_bool) else 0 }}
+CHECK_UPDATES=0
 
 HEALTHCHECKS={{ 1 if (config.healthchecks | default(False) | to_bool) else 0 }}
 HEALTHCHECKS_ID="{{ config.healthchecks_id | default('', true) }}"
 HEALTHCHECKS_URL="{{ config.healthchecks_url | default('https://hc-ping.com/', true) }}"
 
 APPRISE={{ 1 if (config.apprise | default(False) | to_bool) else 0 }}
-APPRISE_URL="{{ config.apprise_url | default('', true) }}"
+APPRISE_URL=({% set _urls = config.apprise_url | default('', true) %}{% for url in _urls.split(',') if url.strip() %}"{{ url.strip() }}"{{ " " if not loop.last }}{% endfor %})
 APPRISE_ATTACH={{ 1 if (config.apprise_attach | default(False) | to_bool) else 0 }}
 
 APPRISE_EMAIL={{ 1 if (config.apprise_email | default(False) | to_bool) else 0 }}
 APPRISE_EMAIL_ATTACH={{ 1 if (config.apprise_email_attach | default(False) | to_bool) else 0 }}
 APPRISE_EMAIL_URL='{{ config.apprise_email_url | default('', true) }}'
 
-TELEGRAM={{ 1 if (config.telegram | default(False) | to_bool) else 0 }}
-TELEGRAM_TOKEN="{{ config.telegram_token | default('', true) }}"
-TELEGRAM_CHAT_ID="{{ config.telegram_chat_id | default('', true) }}"
+TELEGRAM=0
+TELEGRAM_TOKEN=""
+TELEGRAM_CHAT_ID=""
 
-DISCORD={{ 1 if (config.discord | default(False) | to_bool) else 0 }}
-DISCORD_WEBHOOK_URL="{{ config.discord_webhook_url | default('', true) }}"
+DISCORD=0
+DISCORD_WEBHOOK_URL=""
 
 HOOK_NOTIFICATION="{{ config.hook_notification | default('', true) }}"
 
@@ -55,7 +61,7 @@ SPINDOWN={{ 1 if (config.spindown | default(False) | to_bool) else 0 }}
 VERBOSITY={{ 1 if (config.verbosity | default(False) | to_bool) else 0 }}
 
 RETENTION_DAYS={{ config.retention_days | default(0) }}
-SNAPRAID_LOG_DIR="{{ config.snapraid_log_dir | default('$HOME', true) }}"
+SNAPRAID_LOG_DIR="{{ config.snapraid_log_dir | default('', true) }}"
 
 SMART_LOG={{ 1 if (config.smart_log | default(True) | to_bool) else 0 }}
 SMART_LOG_NOTIFY={{ 1 if (config.smart_log_notify | default(False) | to_bool) else 0 }}
@@ -63,7 +69,7 @@ SMART_LOG_NOTIFY={{ 1 if (config.smart_log_notify | default(False) | to_bool) el
 SNAP_STATUS={{ 1 if (config.snap_status | default(False) | to_bool) else 0 }}
 SNAP_STATUS_NOTIFY={{ 1 if (config.snap_status_notify | default(False) | to_bool) else 0 }}
 
-SNAPRAID_CONF="{{ config.snapraid_conf | default('/etc/snapraid.conf', true) }}"
+SNAPRAID_CONF="{{ config.snapraid_conf | default('', true) }}"
 IGNORE_PATTERN=({% for p in (config.ignore_pattern | default('', true)).split() %}"{{ p }}"{{ " " if not loop.last }}{% endfor %})
 
 ### DOCKER CONTAINERS MANAGEMENT ###
@@ -71,8 +77,12 @@ IGNORE_PATTERN=({% for p in (config.ignore_pattern | default('', true)).split() 
 MANAGE_SERVICES={{ 1 if (config.manage_services | default(False) | to_bool) else 0 }}
 DOCKER_MODE={{ config.docker_mode | default(1) }}
 
-DOCKER_LOCAL={{ 1 if (config.docker_local | default(False) | to_bool) else 0 }}
+DOCKER_LOCAL={{ 1 if (config.manage_services | default(False) | to_bool) else 0 }}
 SERVICES="{{ config.services | default('', true) | replace(",", " ") }}"
+
+DOCKER_REMOTE=0
+DOCKER_USER=""
+DOCKER_HOST_SERVICES=()
 
 ### CUSTOM HOOKS ###
 
@@ -86,8 +96,6 @@ AFTER_HOOK_CMD="{{ config.after_hook_cmd | default('', true) }}"
 EXECUTE_BEFORE_SPINDOWN={{ 1 if (config.execute_before_spindown | default(False) | to_bool) else 0 }}
 
 ####################### SYSTEM CONFIGURATION #######################
-# (These you probably keep hard-coded here, but you *could*
-#  also move them into the model if you really want.)
 
 SNAPRAID_BIN="/usr/bin/snapraid"
 MAIL_BIN="/usr/bin/mailx"
@@ -96,9 +104,9 @@ CHK_FAIL=0
 DO_SYNC=0
 EMAIL_SUBJECT_PREFIX="(SnapRAID on $(hostname))"
 SERVICES_STOPPED=0
-SYNC_WARN_FILE="$CURRENT_DIR/snapRAID.warnCount"
-SCRUB_COUNT_FILE="$CURRENT_DIR/snapRAID.scrubCount"
-TMP_OUTPUT="/tmp/snapRAID.out"
+SYNC_WARN_FILE="/var/lib/snapraidaio/{{ config.uuid }}.warnCount"
+SCRUB_COUNT_FILE="/var/lib/snapraidaio/{{ config.uuid }}.scrubCount"
+TMP_OUTPUT="/tmp/snapRAID-{{ config.uuid }}.out"
 SNAPRAID_LOG="/var/log/snapraid.log"
 SECONDS=0
 

@@ -1,3 +1,36 @@
+openmediavault-snapraid-aio (8.1) stable; urgency=low
+
+  * Comprehensive update bringing full SnapRAID AIO Script functionality to the
+    OMV plugin: per-config scheduling, live task output, notification channels,
+    Docker service management, and more.
+  * Add per-config scheduling: Schedule button on datatable, each config
+    gets its own cron entry; removes global enable toggle and Settings page
+  * Add Tools submenu: Sync, Force Sync, Run Now, and Last Log actions;
+    Sync and Force Sync run snapraid directly; Run Now and Last Log use
+    the AIO script; all stream output live via taskDialog
+  * Add Last Run column to config list datatable: timestamp and outcome
+    (OK / WARNING / Started) parsed from /var/log/snapraid.log
+  * Add email_notifications toggle per config: sender and receiver pulled
+    read-only from OMV system notification settings
+  * Add Test Apprise and Test Apprise email buttons to config form: test
+    each notification channel directly from the saved config
+  * Add openmediavault-snapraid to Depends: plugin is non-functional
+    without the OMV SnapRAID plugin
+  * Improve SnapRAID array selector: show array name instead of raw path;
+    resolve symlinks to stable UUID-based paths; hide legacy symlink
+  * Switch Apprise URL field to tagInput: supports multiple URLs as chips
+  * Disable Telegram and Discord integrations (superseded by Apprise)
+  * Delete /etc/snapraid-aio-*.conf files on package purge
+  * Add confdb migration script for 8.1: removes stale enable, docker_local,
+    docker_remote, docker_user, docker_host_services nodes from existing DB
+    entries to prevent Salt rendering failures on upgrade
+  * Move ignore_pattern field to end of Sync Thresholds section
+  * Fix Docker container list sort order: sort alphabetically by name
+  * Remove docker_delay field (remote Docker only, always disabled)
+  * Bundle SnapRAID AIO Script v3.4
+  
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Tue, 05 Aug 2026 00:00:00 +0000
+
 openmediavault-snapraid-aio (8.0) stable; urgency=low
 
   * Initial release

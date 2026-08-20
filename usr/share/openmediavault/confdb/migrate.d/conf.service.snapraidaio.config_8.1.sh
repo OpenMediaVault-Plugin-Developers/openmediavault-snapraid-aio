@@ -1,3 +1,5 @@
+#!/bin/sh
+#
 # @license   http://www.gnu.org/licenses/gpl.html GPL Version 3
 # @author    OpenMediaVault Plugin Developers <plugins@omv-extras.org>
 # @copyright Copyright (c) 2025-2026 openmediavault plugin developers
@@ -15,26 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-{% set _raw = salt['omv_conf.get']('conf.service.snapraidaio.config') %}
-{% set configs = _raw if _raw is iterable and _raw is not mapping else ([_raw] if _raw else []) %}
+set -e
 
-# Ensure at least one state runs so Salt exits 0 when the config list is empty.
-snapraidaio_noop:
-  cmd.run:
-    - name: /bin/true
+. /usr/share/openmediavault/scripts/helper-functions
 
-{% for conf in configs %}
+# Remove fields dropped from the datamodel in 8.1.
+# Stale nodes in existing DB entries prevent Salt from rendering the config.
+xpath="//services/snapraidaio/configs/config"
+for field in enable docker_local docker_remote docker_user docker_host_services docker_delay; do
+    omv_config_delete "${xpath}/${field}"
+done
 
-configure_snapraidaio_{{ conf.uuid }}_conf:
-  file.managed:
-    - name: /etc/snapraid-aio-{{ conf.uuid }}.conf
-    - source:
-      - salt://{{ tpldir }}/files/etc-snapraid-aio_conf.j2
-    - template: jinja
-    - context:
-        config: {{ conf | json }}
-    - user: root
-    - group: root
-    - mode: '0640'
-
-{% endfor %}
+exit 0

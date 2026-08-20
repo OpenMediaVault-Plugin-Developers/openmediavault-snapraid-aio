@@ -1,19 +1,6 @@
 [
   {
     "type": "rpc",
-    "id": "rpc.snapraidaio.set",
-    "params": {
-      "type": "object",
-      "properties": {
-        "enable": {
-          "type": "boolean",
-          "required": true
-        }
-      }
-    }
-  },
-  {
-    "type": "rpc",
     "id": "rpc.snapraidaio.setconfig",
     "params": {
       "type": "object",
@@ -25,6 +12,11 @@
         },
         "snapraid_conf": {
           "type": "string",
+          "minLength": 1,
+          "required": true
+        },
+        "email_notifications": {
+          "type": "boolean",
           "required": true
         },
         "healthchecks": {
@@ -82,7 +74,7 @@
         "add_del_threshold": {
           "type": "number",
           "minimum": 0,
-          "maximum": 10,
+          "maximum": 1,
           "required": true
         },
         "sync_warn_threshold": {
@@ -171,10 +163,6 @@
           ],
           "required": true
         },
-        "docker_local": {
-          "type": "boolean",
-          "required": true
-        },
         "services": {
           "type": "string"
         },
@@ -200,6 +188,25 @@
         },
         "execute_before_spindown": {
           "type": "boolean",
+          "required": true
+        }
+      }
+    }
+  },
+  {
+    "type": "rpc",
+    "id": "rpc.snapraidaio.testnotification",
+    "params": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "format": "uuidv4",
+          "required": true
+        },
+        "channel": {
+          "type": "string",
+          "enum": ["apprise", "apprise_email"],
           "required": true
         }
       }

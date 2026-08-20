@@ -14,30 +14,70 @@ data:
         method: setConfig
     fields:
       - type: confObjUuid
+      - type: hint
+        hintType: info
+        text: _("For full documentation and configuration reference, see the <a href='https://github.com/auanasgheps/snapraid-aio-script' target='_blank'>SnapRAID AIO Script project page</a>.")
       - type: select
         name: snapraid_conf
-        label: _("SnapRAID config file")
-        value: "/etc/snapraid.conf"
+        label: _("SnapRAID array")
+        value: ""
         valueField: path
-        textField: path
+        textField: label
+        validators:
+          required: true
         store:
           proxy:
             service: SnapRaidAio
             get:
               method: enumerateConfigFiles
+      - type: hint
+        hintType: info
+        text: _("If the array list is empty, configure an array using the SnapRAID plugin first, then return here.")
+
       - type: divider
-        title: _("Healthchecks")
+        title: _("Email Notifications")
+      - type: checkbox
+        name: email_notifications
+        label: _("Enable email notifications")
+        hint: _("Sends the report via the email address configured in OMV's notification settings.")
+        value: false
+      - type: textInput
+        name: email_sender
+        label: _("Sender address")
+        value: ""
+        readonly: true
+        modifiers:
+          - type: hidden
+            constraint:
+              operator: falsy
+              arg0:
+                prop: email_notifications
+      - type: textInput
+        name: email_receiver
+        label: _("Receiver address")
+        value: ""
+        readonly: true
+        modifiers:
+          - type: hidden
+            constraint:
+              operator: falsy
+              arg0:
+                prop: email_notifications
+
+      - type: divider
+        title: _("Healthchecks.io")
       - type: container
         fields:
           - type: checkbox
             name: healthchecks
-            label: _("Use Healthchecks.io")
+            label: _("Enable Healthchecks.io")
+            hint: _("Reports script errors to Healthchecks.io. Any warning will be reported as a failure.")
             value: false
           - type: textInput
             name: healthchecks_id
             label: _("Healthchecks UUID")
             value: ""
-            hint: _("Only UUID, not full URL.")
+            hint: _("UUID only, e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Do not paste the full ping URL — the base URL is added automatically.")
             modifiers:
               - type: disabled
                 constraint:
@@ -48,6 +88,7 @@ data:
             name: healthchecks_url
             label: _("Healthchecks URL")
             value: "https://hc-ping.com/"
+            hint: _("Only change if using a self-hosted Healthchecks.io instance. Must include the trailing slash.")
             modifiers:
               - type: disabled
                 constraint:
@@ -61,21 +102,24 @@ data:
         fields:
           - type: checkbox
             name: apprise
-            label: _("Use Apprise")
+            label: _("Enable Apprise")
+            hint: _("Apprise can send notifications to Telegram, Discord, Slack, Gotify, and many other services. Unlike native email, Apprise can attach the full report when a warning is issued. See the <a href='https://appriseit.com/services/' target='_blank'>supported services list</a> for all available integrations. Apprise is not pre-installed — if missing, it will be installed automatically via pipx on the first run. An internet connection is required at that point.")
             value: false
-          - type: textInput
+          - type: tagInput
             name: apprise_url
-            label: _("Apprise URL")
+            label: _("Apprise URLs")
             value: ""
+            hint: _("Enter each Apprise URL and press Enter to add it. Multiple services are supported. Refer to the <a href='https://appriseit.com/services/' target='_blank'>Apprise services page</a> for URL format and configuration examples.")
             modifiers:
-              - type: disabled
+              - type: hidden
                 constraint:
                   operator: falsy
                   arg0:
                     prop: apprise
           - type: checkbox
             name: apprise_attach
-            label: _("Attach report")
+            label: _("Attach report on warnings")
+            hint: _("Attach the full report to the notification when a warning is issued. Not all services support attachments.")
             value: false
             modifiers:
               - type: disabled
@@ -90,22 +134,25 @@ data:
         fields:
           - type: checkbox
             name: apprise_email
-            label: _("Send Apprise email")
+            label: _("Enable Apprise email")
+            hint: _("Uses Apprise to send email. Does not require the Apprise feature above. See the <a href='https://appriseit.com/services/email/' target='_blank'>Apprise email documentation</a> for SMTP and provider setup. Apprise is not pre-installed — if missing, it will be installed automatically via pipx on the first run. An internet connection is required at that point.")
             value: false
-          - type: checkbox
-            name: apprise_email_attach
-            label: _("Attach report")
-            value: false
-            modifiers:
-              - type: disabled
-                constraint:
-                  operator: falsy
-                  arg0:
-                    prop: apprise_email
           - type: textInput
             name: apprise_email_url
             label: _("Apprise Email URL")
             value: ""
+            hint: _("Apprise email service URL. Refer to the <a href='https://appriseit.com/services/email/' target='_blank'>Apprise email documentation</a> for SMTP and provider URL format examples.")
+            modifiers:
+              - type: hidden
+                constraint:
+                  operator: falsy
+                  arg0:
+                    prop: apprise_email
+          - type: checkbox
+            name: apprise_email_attach
+            label: _("Attach report on warnings")
+            hint: _("Attach the full report to the email when a warning is issued.")
+            value: false
             modifiers:
               - type: disabled
                 constraint:
@@ -119,92 +166,114 @@ data:
         value: ""
         monospaced: true
         rows: 2
-        hint: _("Script or command to call instead of default mail. SUBJECT and BODY are passed as parameters.")
+        hint: _("Legacy option, superseded by Apprise. Script or command called instead of the default email. SUBJECT and BODY are passed as parameters. Runs as root — enter only trusted commands.")
 
       - type: divider
-        title: _("Thresholds and scrub settings")
+        title: _("Sync thresholds")
       - type: numberInput
         name: del_threshold
         label: _("Delete threshold")
         value: 500
         min: 0
+        hint: _("Abort sync if more than N files were deleted since last run. 0 disables.")
       - type: numberInput
         name: up_threshold
         label: _("Update threshold")
         value: 500
         min: 0
+        hint: _("Abort sync if more than N files were updated since last run. 0 disables.")
       - type: numberInput
         name: add_del_threshold
         label: _("Add/Delete ratio threshold")
         value: 0
         min: 0
+        max: 1
         step: 0.01
-        hint: _("0 disables. Example&colon; 0.76 = 3800/5000 added/deleted.")
+        hint: _("Allow sync even if delete threshold is exceeded, if enough files were also added. 0 disables. Range&colon; 0.0–1.0. Example&colon; 0.76 means at least 76% of deleted files must have a matching add.")
       - type: numberInput
         name: sync_warn_threshold
         label: _("Sync warning threshold")
         value: -1
-        hint: _("0=always force sync, -1=never force sync, >0=number of warnings before forced sync.")
+        hint: _("Number of times a threshold warning is issued before forcing a sync anyway. 0 = always force, -1 = never force.")
+      - type: textInput
+        name: ignore_pattern
+        label: _("Ignore pattern")
+        value: ""
+        hint: _("Advanced. Space-separated glob patterns to exclude from diff counts. Misuse will leave parity out of sync without warning — use SnapRAID's exclude configuration for files that change often. Example&colon; *.tmp /var/cache/* */backup/*")
 
+      - type: divider
+        title: _("Scrub settings")
       - type: numberInput
         name: scrub_percent
-        label: _("Scrub percent")
+        label: _("Scrub percentage")
         value: 5
         min: 0
         max: 100
+        hint: _("Percentage of the array to verify per run.")
       - type: numberInput
         name: scrub_age
         label: _("Scrub age (days)")
         value: 10
         min: 0
+        hint: _("Only scrub blocks that have not been verified in the last N days.")
       - type: checkbox
         name: scrub_new
         label: _("Scrub new blocks after sync")
         value: false
+        hint: _("Immediately scrub newly synced blocks after each sync run. Increases runtime but catches errors on new data sooner.")
       - type: numberInput
         name: scrub_delayed_run
-        label: _("Scrub every N runs")
+        label: _("Scrub delayed run")
         value: 0
         min: 0
-        hint: _("0 = scrub every time.")
+        hint: _("Run scrub only every N script executions. 0 = scrub every time.")
 
+      - type: divider
+        title: _("SnapRAID options")
       - type: checkbox
         name: prehash
         label: _("Pre-hash data")
         value: true
+        hint: _("Read data twice before syncing to detect silent read errors. Recommended.")
       - type: checkbox
         name: force_zero
-        label: _("Force zero-sized file sync")
+        label: _("Sync zero-sized files")
         value: false
+        hint: _("SnapRAID skips zero-sized files by default. Enable to include them.")
       - type: checkbox
         name: spindown
-        label: _("Use hd-idle spindown")
+        label: _("Spin down disks when done")
         value: false
+        hint: _("Spin down disks after the script completes using hd-idle. hd-idle is not installed automatically — see the <a href='https://github.com/auanasgheps/snapraid-aio-script#installing-hd-idle-for-automatic-disk-spindown' target='_blank'>installation instructions</a> before enabling this option.")
 
       - type: checkbox
         name: verbosity
         label: _("Verbose output in notification")
         value: false
+        hint: _("Include full SnapRAID output in the notification. Not recommended — may produce very large messages.")
 
       - type: numberInput
         name: retention_days
         label: _("Log retention (days)")
         value: 0
         min: 0
+        hint: _("Days to keep log files. 0 keeps logs forever.")
       - type: textInput
         name: snapraid_log_dir
         label: _("SnapRAID log directory")
         value: ""
+        hint: _("Absolute path to the directory for log files. Leave empty to use /root.")
 
       - type: container
         fields:
           - type: checkbox
             name: smart_log
-            label: _("Log SMART info")
+            label: _("Log SMART data")
             value: true
+            hint: _("Run SnapRAID's SMART check and include the output in the log.")
           - type: checkbox
             name: smart_log_notify
-            label: _("Send SMART log via Telegram/Discord")
+            label: _("Include SMART data in notification")
             value: false
             modifiers:
               - type: disabled
@@ -217,11 +286,12 @@ data:
         fields:
           - type: checkbox
             name: snap_status
-            label: _("Run 'snapraid status'")
+            label: _("Log SnapRAID status")
             value: false
+            hint: _("Run SnapRAID status after each sync and include the output in the log.")
           - type: checkbox
             name: snap_status_notify
-            label: _("Notify")
+            label: _("Include status in notification")
             value: false
             modifiers:
               - type: disabled
@@ -230,18 +300,13 @@ data:
                   arg0:
                     prop: snap_status
 
-      - type: textInput
-        name: ignore_pattern
-        label: _("Ignore pattern")
-        value: ""
-        hint: _("Space-separated glob patterns to exclude from diff counts. Example&colon; *.tmp /var/cache/* */backup/*")
-
       - type: divider
         title: _("Docker and service management")
       - type: checkbox
         name: manage_services
         label: _("Manage Docker containers / services")
         value: false
+        hint: _("Stop or pause the selected Docker containers before SnapRAID runs and restart or unpause them when done. Prevents open file conflicts during sync.")
       - type: select
         name: docker_mode
         label: _("Docker mode")
@@ -250,31 +315,33 @@ data:
           data:
             - [1, _("Pause / unpause")]
             - [2, _("Stop / restart")]
-      - type: checkbox
-        name: docker_local
-        label: _("Manage local Docker containers")
-        value: false
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: manage_services
       - type: select
         name: services
-        label: _("Local container list")
+        label: _("Docker container list")
         multiple: true
         valueField: name
         textField: name
+        hint: _("Containers to stop or pause before SnapRAID runs. All selected containers are stopped or paused together.")
         store:
           proxy:
             service: SnapRaidAio
             get:
               method: getContainers
           sorters:
-            dir: asc
-            prop: name
+            - dir: asc
+              prop: name
         modifiers:
           - type: disabled
             constraint:
               operator: falsy
               arg0:
-                prop: docker_local
-
+                prop: manage_services
       - type: divider
         title: _("Custom hooks")
       - type: checkbox
@@ -286,31 +353,99 @@ data:
         name: before_hook_name
         label: _("Before hook name")
         value: ""
+        hint: _("Display name shown in the log output.")
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: custom_hook
       - type: textArea
         name: before_hook_cmd
         label: _("Before hook command")
         monospaced: true
         rows: 2
         value: ""
+        hint: _("Shell command or script path. Runs as root before SnapRAID operations start — enter only trusted commands.")
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: custom_hook
 
       - type: textInput
         name: after_hook_name
         label: _("After hook name")
         value: ""
+        hint: _("Display name shown in the log output.")
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: custom_hook
       - type: textArea
         name: after_hook_cmd
         label: _("After hook command")
         monospaced: true
         rows: 2
         value: ""
+        hint: _("Shell command or script path. Runs as root after SnapRAID operations complete — enter only trusted commands.")
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: custom_hook
 
       - type: checkbox
         name: execute_before_spindown
-        label: _("Execute before spindown")
+        label: _("Run after-hook before spindown")
         value: false
+        hint: _("Run the after hook before spinning down disks instead of after.")
+        modifiers:
+          - type: disabled
+            constraint:
+              operator: falsy
+              arg0:
+                prop: custom_hook
     buttons:
       - template: submit
+        execute:
+          type: url
+          url: "/services/snapraidaio/configs"
       - template: cancel
         execute:
           type: url
-          url: "/services/snapraidaio"
+          url: "/services/snapraidaio/configs"
+      - text: _("Test Apprise")
+        enabledConstraint:
+          operator: truthy
+          arg0:
+            prop: apprise
+        execute:
+          type: request
+          request:
+            service: SnapRaidAio
+            method: testNotification
+            params:
+              uuid: "{{ _routeParams.uuid }}"
+              channel: "apprise"
+            progressMessage: _("Sending Apprise test notification ...")
+            successNotification: _("Apprise test notification sent. Check your configured services.")
+      - text: _("Test Apprise email")
+        enabledConstraint:
+          operator: truthy
+          arg0:
+            prop: apprise_email
+        execute:
+          type: request
+          request:
+            service: SnapRaidAio
+            method: testNotification
+            params:
+              uuid: "{{ _routeParams.uuid }}"
+              channel: "apprise_email"
+            progressMessage: _("Sending Apprise email test ...")
+            successNotification: _("Apprise email test sent. Check your inbox.")

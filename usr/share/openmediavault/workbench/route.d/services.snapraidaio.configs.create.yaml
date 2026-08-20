@@ -1,7 +1,8 @@
 version: "1.0"
 type: route
 data:
-  url: "/services/snapraidaio/configs/create"
+  url: "/services/snapraidaio/configs/create/:uuid"
   title: _("Create")
   notificationTitle: _("Created config.")
+  editing: true
   component: omv-services-snapraidaio-configs-form-page

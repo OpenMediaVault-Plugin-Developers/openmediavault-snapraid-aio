@@ -7,18 +7,22 @@
     "iterable": true,
     "idproperty": "uuid"
   },
-  "enable": {
-    "type": "boolean",
-    "default": false
-  },
   "properties": {
     "uuid": {
       "type": "string",
       "format": "uuidv4"
     },
+    "cron_uuid": {
+      "type": "string",
+      "default": ""
+    },
     "snapraid_conf": {
       "type": "string",
-      "default": "/etc/snapraid.conf"
+      "default": ""
+    },
+    "email_notifications": {
+      "type": "boolean",
+      "default": false
     },
     "healthchecks": {
       "type": "boolean",
@@ -70,6 +74,8 @@
     },
     "add_del_threshold": {
       "type": "number",
+      "minimum": 0,
+      "maximum": 1,
       "default": 0
     },
     "sync_warn_threshold": {
@@ -119,7 +125,7 @@
     },
     "snapraid_log_dir": {
       "type": "string",
-      "default": "$HOME"
+      "default": ""
     },
     "smart_log": {
       "type": "boolean",
@@ -152,10 +158,6 @@
         2
       ],
       "default": 1
-    },
-    "docker_local": {
-      "type": "boolean",
-      "default": false
     },
     "services": {
       "type": "string",

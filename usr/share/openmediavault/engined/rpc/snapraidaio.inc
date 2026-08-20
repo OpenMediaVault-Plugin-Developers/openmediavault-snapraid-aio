@@ -28,44 +28,16 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
 
     public function initialize()
     {
-        $this->registerMethod("get");
-        $this->registerMethod("set");
-
         $this->registerMethod("getConfigList");
         $this->registerMethod("getConfig");
         $this->registerMethod("setConfig");
         $this->registerMethod("deleteConfig");
         $this->registerMethod("enumerateConfigFiles");
         $this->registerMethod("getContainers");
-    }
-
-    public function get($params, $context)
-    {
-        // Validate the RPC caller context.
-        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
-        // Get the configuration object.
-        $db = \OMV\Config\Database::getInstance();
-        $object = $db->get("conf.service.snapraidaio");
-        // Remove useless properties from the object.
-        $object->remove("configs");
-        return $object->getAssoc();
-    }
-
-    public function set($params, $context)
-    {
-        // Validate the RPC caller context.
-        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
-        // Validate the parameters of the RPC service method.
-        $this->validateMethodParams($params, "rpc.snapraidaio.set");
-        // Get the existing configuration object.
-        $db = \OMV\Config\Database::getInstance();
-        $object = $db->get("conf.service.snapraidaio");
-        $object->setAssoc($params);
-        $db->set($object);
-        // Remove useless properties from the object.
-        $object->remove("configs");
-        // Return the configuration object.
-        return $object->getAssoc();
+        $this->registerMethod("getSchedule");
+        $this->registerMethod("setSchedule");
+        $this->registerMethod("executeCommand");
+        $this->registerMethod("testNotification");
     }
 
     public function getConfigList($params, $context)
@@ -77,6 +49,34 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         // Get configuration data.
         $db = \OMV\Config\Database::getInstance();
         $objects = $db->getAssoc("conf.service.snapraidaio.config");
+        try {
+            $labelMap = $this->buildLabelMap();
+        } catch (\Exception $e) {
+            $labelMap = [];
+        }
+        $uuids = array_column($objects, 'uuid');
+        try {
+            $lastRunMap = $this->getLastRunStatuses($uuids);
+        } catch (\Exception $e) {
+            $lastRunMap = array_fill_keys($uuids, '');
+        }
+        foreach ($objects as &$obj) {
+            $obj["array_name"] = $labelMap[$obj["snapraid_conf"]] ?? "";
+            if (!empty($obj["cron_uuid"])) {
+                try {
+                    \OMV\Rpc\Rpc::call("Cron", "get", ["uuid" => $obj["cron_uuid"]], $context);
+                    $obj["scheduled"] = true;
+                } catch (\Exception $e) {
+                    // Cron entry no longer exists; report unscheduled without
+                    // writing back to the DB to avoid triggering an Apply banner.
+                    $obj["scheduled"] = false;
+                }
+            } else {
+                $obj["scheduled"] = false;
+            }
+            $obj["last_run"] = $lastRunMap[$obj["uuid"]] ?? '';
+        }
+        unset($obj);
         // Filter the result.
         return $this->applyFilter($objects, $params["start"], $params["limit"],
             $params["sortfield"], $params["sortdir"]);
@@ -88,10 +88,22 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
         // Validate the parameters of the RPC service method.
         $this->validateMethodParams($params, "rpc.common.objectuuid");
-        // Get the configuration object.
         $db = \OMV\Config\Database::getInstance();
-        $result = $db->getAssoc("conf.service.snapraidaio.config", $params["uuid"]);
-        $result["services"] = strlen($result["services"]) ? explode(",", $result["services"]) : [];
+        $isNew = ($params["uuid"] === \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID"));
+        if ($isNew) {
+            // Return datamodel defaults for a new object.
+            $object = new \OMV\Config\ConfigObject("conf.service.snapraidaio.config");
+            $result = $object->getAssoc();
+            // Ensure the sentinel UUID is returned so the form can POST it back.
+            $result["uuid"]     = $params["uuid"];
+            $result["services"] = [];
+        } else {
+            $result = $db->getAssoc("conf.service.snapraidaio.config", $params["uuid"]);
+            $result["services"] = strlen($result["services"]) ? explode(",", $result["services"]) : [];
+        }
+        $emailCfg = $db->getAssoc("conf.system.notification.email");
+        $result["email_sender"]   = $emailCfg["sender"]       ?? "";
+        $result["email_receiver"] = $emailCfg["primaryemail"] ?? "";
         return $result;
     }
 
@@ -99,24 +111,31 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
     {
         // Validate the RPC caller context.
         $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
+        // Normalize empty uuid (sent by confObjUuid in edit mode for new objects)
+        // to the sentinel so validateMethodParams and isNew checks work correctly.
+        if (empty($params["uuid"])) {
+            $params["uuid"] = \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID");
+        }
         // Validate the parameters of the RPC service method.
-        if (isset($params["services"]) && $params["services"] !== null && $params["services"] !== "null") {
+        if (isset($params["services"]) && is_array($params["services"])) {
             $params["services"] = implode(",", $params["services"]);
         } else {
             $params["services"] = "";
         }
+        unset($params["email_sender"]);
+        unset($params["email_receiver"]);
         $this->validateMethodParams($params, "rpc.snapraidaio.setconfig");
-        // Prepare the configuration object.
-        $object = new \OMV\Config\ConfigObject("conf.service.snapraidaio.config");
         $db = \OMV\Config\Database::getInstance();
-        $object->setAssoc($params);
-        // Set the configuration object.
-        $isNew = $object->isNew();
-        $db = \OMV\Config\Database::getInstance();
-        if (TRUE === $isNew) {
-            // Check uniqueness - config file
-            $db->assertIsUnique($object, "snapraid_conf");
+        // Load existing object to preserve fields not sent by the form (e.g. cron_uuid).
+        $isNew = ($params["uuid"] === \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID"));
+        if ($isNew) {
+            $object = new \OMV\Config\ConfigObject("conf.service.snapraidaio.config");
+        } else {
+            $object = $db->get("conf.service.snapraidaio.config", $params["uuid"]);
         }
+        $object->setAssoc($params);
+        // Check uniqueness on both create and edit.
+        $db->assertIsUnique($object, "snapraid_conf");
         $db->set($object);
         // Return the configuration object.
         return $object->getAssoc();
@@ -131,43 +150,54 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         // Delete the configuration object.
         $db = \OMV\Config\Database::getInstance();
         $object = $db->get("conf.service.snapraidaio.config", $params["uuid"]);
+        $assoc = $object->getAssoc();
         $db->delete($object);
+        // Remove the generated AIO conf file if it exists.
+        $confFile = $this->getAioConfPath($params["uuid"]);
+        if (file_exists($confFile)) {
+            unlink($confFile);
+        }
+        // Remove per-array state files (warn/scrub counters).
+        foreach (["warnCount", "scrubCount"] as $suffix) {
+            $stateFile = sprintf("/var/lib/snapraidaio/%s.%s", $params["uuid"], $suffix);
+            if (file_exists($stateFile)) {
+                unlink($stateFile);
+            }
+        }
+        // Remove the linked cron entry if one was saved.
+        if (!empty($assoc["cron_uuid"])) {
+            try {
+                \OMV\Rpc\Rpc::call("Cron", "delete",
+                    ["uuid" => $assoc["cron_uuid"]], $context);
+            } catch (\Exception $e) {
+                // Cron entry already gone; nothing to do.
+            }
+        }
         // Return the deleted configuration object.
-        return $object->getAssoc();
+        return $assoc;
     }
 
     public function enumerateConfigFiles($params, $context)
     {
         // Validate the RPC caller context.
         $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
-        $dir = "/etc/snapraid";
-        // check if /etc/snapraid exists
-        if (!is_dir($dir)) {
-            throw new \OMV\Exception(gettext("/etc/snapraid does not exist!"));
+        try {
+            $labelMap = $this->buildLabelMap();
+        } catch (\Exception $e) {
+            $labelMap = [];
         }
-        // get all snapraid config files
         $files = [];
-        $files[] = [
-            "path" => "/etc/snapraid.conf"
-        ];
-        $it = new DirectoryIterator($dir);
-        foreach ($it as $entry) {
-            if ($entry->isDot()) continue;
-            if (!$entry->isFile()) continue;
-            if ($entry->isLink()) continue;
-            $path = $entry->getPathname();
-            if (!preg_match("/\.conf$/i", $path)) continue;
-            $files[] = [
-                "path" => $path
-            ];
+        foreach ($labelMap as $path => $label) {
+            $files[] = ["path" => $path, "label" => $label];
         }
-        return ($files);
+        usort($files, fn($a, $b) => strcasecmp($a["label"], $b["label"]));
+        return $files;
     }
 
     public function getContainers($params, $context)
     {
         // Validate the RPC caller context.
-        $this->validateMethodContext($context, ["role" => OMV_ROLE_EVERYONE]);
+        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
         $objects = [];
         $status = "";
         // check to see if docker is installed and running
@@ -187,14 +217,15 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
             $cmdArgs[] = "docker";
             $cmdArgs[] = "container";
             $cmdArgs[] = "ls";
-            $cmdArgs[] = '--format "{{.Image}},{{.Names}},{{.Status}}"';
+            $cmdArgs[] = '--format';
+            $cmdArgs[] = '{{.Image}},{{.Names}},{{.Status}}';
             $cmd = new \OMV\System\Process($cmdArgs);
             $cmd->execute($output, $exitStatus);
             foreach ($output as $cnt) {
                 if (empty($cnt)) {
                     continue;
                 }
-                $parts = explode(",", $cnt);
+                $parts = explode(",", $cnt, 3);
                 $objects[] = [
                     "image" => $parts[0],
                     "name" => $parts[1],
@@ -203,5 +234,395 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
             }
         }
         return ($objects);
+    }
+
+    private function getAioConfPath($uuid)
+    {
+        return sprintf("/etc/snapraid-aio-%s.conf", $uuid);
+    }
+
+    // Returns ["uuid" => "YYYY-MM-DD HH:MM — OK|WARNING|Started"] for each UUID.
+    // Reads /var/log/snapraid.log once and scans for the last run start per UUID.
+    // "Started" means the run began but no completion line was found — could be
+    // currently running or an aborted/failed run.
+    private function getLastRunStatuses($uuids)
+    {
+        $result = array_fill_keys($uuids, '');
+        $logFile = "/var/log/snapraid.log";
+        if (!is_readable($logFile)) {
+            return $result;
+        }
+        $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($lines === false) {
+            return $result;
+        }
+        $uuidSet = array_flip($uuids);
+        // Forward pass: record index of last start line seen for each UUID.
+        $lastStartIdx = [];
+        $lastStartTs  = [];
+        foreach ($lines as $i => $line) {
+            if (strpos($line, 'Using configuration file: /etc/snapraid-aio-') === false) {
+                continue;
+            }
+            if (!preg_match('~snapraid-aio-([0-9a-f\-]{36})\.conf~', $line, $m)) {
+                continue;
+            }
+            $uuid = $m[1];
+            if (!isset($uuidSet[$uuid])) {
+                continue;
+            }
+            $lastStartIdx[$uuid] = $i;
+            // Timestamp is the leading "[YYYY-MM-DD HH:MM" portion of the line.
+            $ts = '';
+            if (preg_match('/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/', $line, $tm)) {
+                $ts = $tm[1];
+            }
+            $lastStartTs[$uuid] = $ts;
+        }
+        // For each UUID with a known start, scan its run range for completion/warnings.
+        $total = count($lines);
+        foreach ($lastStartIdx as $uuid => $startIdx) {
+            // Find end boundary: next start line after $startIdx, or EOF.
+            $endIdx = $total;
+            for ($j = $startIdx + 1; $j < $total; $j++) {
+                if (strpos($lines[$j], 'Using configuration file: /etc/snapraid-aio-') !== false) {
+                    $endIdx = $j;
+                    break;
+                }
+            }
+            $completed = false;
+            $hasWarn   = false;
+            for ($j = $startIdx + 1; $j < $endIdx; $j++) {
+                if (!$completed && strpos($lines[$j], 'Total time elapsed for SnapRAID') !== false) {
+                    $completed = true;
+                }
+                if (!$hasWarn && strpos($lines[$j], ': WARN: \'') !== false) {
+                    $hasWarn = true;
+                }
+            }
+            if (!$completed) {
+                $status = 'Started';
+            } elseif ($hasWarn) {
+                $status = 'WARNING';
+            } else {
+                $status = 'OK';
+            }
+            $ts = $lastStartTs[$uuid];
+            $result[$uuid] = $ts ? sprintf("%s \u{2014} %s", $ts, $status) : $status;
+        }
+        return $result;
+    }
+
+    // Build a [realpath => label] map from /etc/snapraid/ symlinks.
+    private function buildLabelMap()
+    {
+        $dir = "/etc/snapraid";
+        if (!is_dir($dir)) {
+            throw new \OMV\Exception(gettext("/etc/snapraid does not exist!"));
+        }
+        $map = [];
+        $it = new DirectoryIterator($dir);
+        foreach ($it as $entry) {
+            if ($entry->isDot()) continue;
+            if (!$entry->isLink()) continue;
+            $path = $entry->getPathname();
+            if (!preg_match("/\.conf$/i", $path)) continue;
+            $real = realpath($path);
+            if ($real === false) continue;
+            $map[$real] = basename($path, ".conf");
+        }
+        return $map;
+    }
+
+    private function getArrayLabel($confPath)
+    {
+        try {
+            $map = $this->buildLabelMap();
+        } catch (\Exception $e) {
+            return "";
+        }
+        return $map[$confPath] ?? "";
+    }
+
+    public function getSchedule($params, $context)
+    {
+        // Validate the RPC caller context.
+        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
+        // Validate the parameters of the RPC service method.
+        $this->validateMethodParams($params, "rpc.common.objectuuid");
+        $configUuid = $params["uuid"];
+        $db = \OMV\Config\Database::getInstance();
+        $configObject = $db->get("conf.service.snapraidaio.config", $configUuid);
+        $cronUuid = $configObject->get("cron_uuid");
+        if (!empty($cronUuid)) {
+            try {
+                $cron = \OMV\Rpc\Rpc::call("Cron", "get", ["uuid" => $cronUuid], $context);
+                // Replace the cron UUID with the config UUID so the form POSTs back
+                // to the right config, and carry the cron UUID separately.
+                $cron["uuid"]      = $configUuid;
+                $cron["cron_uuid"] = $cronUuid;
+                // Cron::get returns time fields as arrays for 'exactly' execution;
+                // flatten to scalars for the form's single-select fields.
+                foreach (["minute", "hour", "dayofmonth", "month", "dayofweek"] as $field) {
+                    if (isset($cron[$field]) && is_array($cron[$field])) {
+                        $cron[$field] = implode(",", $cron[$field]);
+                    }
+                }
+                return $cron;
+            } catch (\Exception $e) {
+                // Cron entry no longer exists; fall through to defaults without
+                // writing back to the DB to avoid triggering an Apply banner.
+            }
+        }
+        // No cron entry yet; return defaults. uuid = config UUID so the form
+        // POSTs back correctly; cron_uuid is empty to signal first-time save.
+        $label = $this->getArrayLabel($configObject->get("snapraid_conf"));
+        $comment = $label ? sprintf("SnapRAID AIO %s", $label) : "SnapRAID AIO";
+        return [
+            "uuid"       => $configUuid,
+            "cron_uuid"  => "",
+            "enable"     => true,
+            "execution"  => "exactly",
+            "minute"     => "0",
+            "hour"       => "0",
+            "dayofmonth" => "*",
+            "month"      => "*",
+            "dayofweek"  => "*",
+            "sendemail"  => false,
+            "comment"    => $comment,
+        ];
+    }
+
+    public function setSchedule($params, $context)
+    {
+        // Validate the RPC caller context.
+        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
+        // Validate the parameters of the RPC service method.
+        $this->validateMethodParams($params, "rpc.common.objectuuid");
+        $configUuid = $params["uuid"];
+        // cron_uuid is passed back from the form (set by getSchedule).
+        $cronUuid = isset($params["cron_uuid"]) ? $params["cron_uuid"] : "";
+        $isNewCron = empty($cronUuid);
+        $db = \OMV\Config\Database::getInstance();
+        $configObject = $db->get("conf.service.snapraidaio.config", $configUuid);
+        // Build the Cron RPC params. Strip fields unknown to the Cron schema.
+        $cronParams = $params;
+        unset($cronParams["cron_uuid"]);
+        $cronParams["uuid"] = !$isNewCron
+            ? $cronUuid
+            : \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID");
+        $cronParams["type"]     = "userdefined";
+        $cronParams["username"] = "root";
+        $cronParams["command"]  = sprintf(
+            "/usr/sbin/snapraid-aio-script.sh --config %s",
+            $this->getAioConfPath($configUuid)
+        );
+        // Required by the Cron schema; we always use fixed values, not "every N".
+        $cronParams["everynminute"]     = false;
+        $cronParams["everynhour"]       = false;
+        $cronParams["everyndayofmonth"] = false;
+        // Cron::set expects time fields as arrays for 'exactly' execution.
+        // Split on comma first to correctly restore multi-value fields that
+        // getSchedule flattened with implode (e.g. ["0","30"] → "0,30" → ["0","30"]).
+        foreach (["minute", "hour", "dayofmonth", "month", "dayofweek"] as $field) {
+            if (isset($cronParams[$field]) && !is_array($cronParams[$field])) {
+                $cronParams[$field] = array_map('trim', explode(",", $cronParams[$field]));
+            }
+        }
+        // Save the cron entry and retrieve its UUID (new on first save).
+        try {
+            $cronResult = \OMV\Rpc\Rpc::call("Cron", "set", $cronParams, $context);
+        } catch (\Exception $e) {
+            // Only retry when we had a stored UUID that turned out stale.
+            // Re-throw immediately for new entries or any non-"not found" error.
+            if ($isNewCron || stripos($e->getMessage(), "not found") === false) {
+                throw $e;
+            }
+            // Stale UUID — the cron entry no longer exists; create a new one instead.
+            $isNewCron = true;
+            $cronParams["uuid"] = \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID");
+            $cronResult = \OMV\Rpc\Rpc::call("Cron", "set", $cronParams, $context);
+        }
+        // Persist the cron entry UUID back to the config on first save (or recovery).
+        if ($isNewCron) {
+            $configObject->set("cron_uuid", $cronResult["uuid"]);
+            $db->set($configObject);
+        }
+        return $cronResult;
+    }
+
+    public function executeCommand($params, $context)
+    {
+        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
+        $this->validateMethodParams($params, '{
+            "type": "object",
+            "properties": {
+                "uuid": { "type": "string" },
+                "command": { "type": "string", "enum": ["sync", "force-sync", "run", "last-log"] }
+            },
+            "required": ["uuid", "command"]
+        }');
+        $db = \OMV\Config\Database::getInstance();
+        $object = $db->get("conf.service.snapraidaio.config", $params['uuid']);
+        $aioConf = $this->getAioConfPath($params['uuid']);
+        return $this->execBgProc(function($bgStatusFilename, $bgOutputFilename)
+                use ($object, $params, $aioConf) {
+            switch ($params['command']) {
+                case "run":
+                    if (!file_exists($aioConf)) {
+                        throw new \OMV\Exception(gettext(
+                            "AIO config file not found. Please apply settings first."
+                        ));
+                    }
+                    $cmdArgs = [
+                        "/usr/sbin/snapraid-aio-script.sh",
+                        "--config", $aioConf
+                    ];
+                    break;
+                case "force-sync":
+                    if (!file_exists($aioConf)) {
+                        throw new \OMV\Exception(gettext(
+                            "AIO config file not found. Please apply settings first."
+                        ));
+                    }
+                    $cmdArgs = [
+                        "/usr/sbin/snapraid-aio-script.sh",
+                        "--config", $aioConf,
+                        "--force-sync"
+                    ];
+                    break;
+                case "sync":
+                    $snapraidConf = $object->get("snapraid_conf");
+                    if (empty($snapraidConf)) {
+                        throw new \OMV\Exception(gettext(
+                            "No SnapRAID array selected. Please edit the config and choose an array."
+                        ));
+                    }
+                    $cmdArgs = [
+                        "/usr/bin/snapraid",
+                        "sync", "-c", escapeshellarg($snapraidConf)
+                    ];
+                    break;
+                case "last-log":
+                    $logDir = $object->get("snapraid_log_dir");
+                    // Fall back to /root if empty or contains a shell variable
+                    // (e.g. the legacy default "$HOME" which PHP cannot expand).
+                    if (empty($logDir) || strpos($logDir, '$') !== false) {
+                        $logDir = "/root";
+                    }
+                    // Reject paths that are not absolute or contain traversal sequences.
+                    if ($logDir[0] !== '/' || strpos($logDir, '..') !== false) {
+                        throw new \OMV\Exception(gettext(
+                            "Invalid log directory: path must be absolute and contain no '..' components."
+                        ));
+                    }
+                    $files = glob($logDir . "/SnapRAID-*.txt");
+                    if (empty($files)) {
+                        file_put_contents($bgOutputFilename,
+                            sprintf("No log files found in %s.\n", $logDir));
+                        return [];
+                    }
+                    usort($files, fn($a, $b) => filemtime($b) - filemtime($a));
+                    $cmdArgs = ["/bin/cat", $files[0]];
+                    break;
+            }
+            $cmd = new \OMV\System\Process($cmdArgs);
+            $cmd->setRedirect2to1();
+            $cmdLine = $cmd->getCommandLine();
+            $this->exec($cmdLine, $output, $bgOutputFilename);
+            return $output;
+        });
+    }
+
+    public function testNotification($params, $context)
+    {
+        $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
+        $this->validateMethodParams($params, "rpc.snapraidaio.testnotification");
+
+        if ($params["uuid"] === \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID")) {
+            throw new \OMV\Exception(
+                "Save the configuration first before sending a test notification."
+            );
+        }
+
+        $config = $this->callMethod("getConfig", ["uuid" => $params["uuid"]], $context);
+
+        $appriseBin = trim(shell_exec("command -v apprise 2>/dev/null") ?: "");
+        if (empty($appriseBin)) {
+            $appriseBin = "/root/.local/bin/apprise";
+        }
+        if (!is_executable($appriseBin)) {
+            throw new \OMV\Exception(
+                "Apprise binary not found. Run the AIO script at least once to auto-install it."
+            );
+        }
+
+        $verifyProc = new \OMV\System\Process([$appriseBin, "--version"]);
+        $verifyProc->setRedirect2to1(true);
+        $verifyProc->setQuiet(true);
+        $verifyOutput = [];
+        $verifyProc->execute($verifyOutput, $verifyExitCode);
+        if ($verifyExitCode !== 0) {
+            throw new \OMV\Exception(
+                "Apprise is installed but its Python environment is broken (ModuleNotFoundError). " .
+                "Re-run the AIO script to reinstall it: %s",
+                implode(" ", $verifyOutput)
+            );
+        }
+
+        $subject = "SnapRAID AIO - test notification";
+        $body    = "This is a test notification from SnapRAID AIO.";
+
+        if ($params["channel"] === "apprise") {
+            $this->testAppriseUrls($config, $appriseBin, $subject, $body);
+        } elseif ($params["channel"] === "apprise_email") {
+            $this->testAppriseEmail($config, $appriseBin, $subject, $body);
+        } else {
+            throw new \OMV\Exception(
+                sprintf("Unknown notification channel '%s'.", $params["channel"])
+            );
+        }
+    }
+
+    private function testAppriseUrls($config, $appriseBin, $subject, $body)
+    {
+        if (empty($config["apprise"]) || empty($config["apprise_url"])) {
+            throw new \OMV\Exception("Apprise is not enabled or has no URLs configured.");
+        }
+        $errors = [];
+        foreach (explode(",", $config["apprise_url"]) as $url) {
+            $url = trim($url);
+            if (empty($url)) continue;
+            $proc = new \OMV\System\Process([$appriseBin, "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($url)]);
+            $proc->setRedirect2to1(true);
+            $proc->setQuiet(true);
+            $output = [];
+            $proc->execute($output, $exitCode);
+            if ($exitCode !== 0) {
+                $errors[] = sprintf("URL '%s' failed: %s", $url, implode("\n", $output));
+            }
+        }
+        if (!empty($errors)) {
+            throw new \OMV\Exception(implode("\n", $errors));
+        }
+    }
+
+    private function testAppriseEmail($config, $appriseBin, $subject, $body)
+    {
+        if (empty($config["apprise_email"]) || empty($config["apprise_email_url"])) {
+            throw new \OMV\Exception("Apprise email is not enabled or has no URL configured.");
+        }
+        $proc = new \OMV\System\Process([
+            $appriseBin, "-i", "html", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($config["apprise_email_url"])
+        ]);
+        $proc->setRedirect2to1(true);
+        $proc->setQuiet(true);
+        $output = [];
+        $proc->execute($output, $exitCode);
+        if ($exitCode !== 0) {
+            throw new \OMV\Exception(
+                sprintf("Apprise email failed: %s", implode("\n", $output))
+            );
+        }
     }
 }

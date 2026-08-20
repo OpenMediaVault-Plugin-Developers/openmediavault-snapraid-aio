@@ -6,29 +6,131 @@ data:
   config:
     autoReload: false
     hasSearchField: true
-    stateId: 07e2a020-e8b9-11f0-997d-525400be629f
+    stateId: 2b4e8f51-6d3a-5c98-b2e7-9f8d1e4b0c63
     sorters:
       - dir: asc
-        prop: name
+        prop: array_name
     store:
       proxy:
         service: SnapRaidAio
         get:
           method: getConfigList
     columns:
+      - name: _("Array")
+        prop: array_name
+        flexGrow: 1
+        sortable: true
+      - name: _("Scheduled")
+        prop: scheduled
+        flexGrow: 1
+        sortable: true
+        cellTemplateName: checkIcon
+      - name: _("Last Run")
+        prop: last_run
+        flexGrow: 1
+        sortable: true
       - name: _("Config File")
         prop: snapraid_conf
-        flexGrow: 1
+        flexGrow: 2
         sortable: true
     actions:
       - template: create
         execute:
           type: url
-          url: "/services/snapraidaio/configs/create"
+          url: "/services/snapraidaio/configs/create/fa4b1c66-ef79-11e5-87a0-0002b3a176b4"
       - template: edit
         execute:
           type: url
           url: "/services/snapraidaio/configs/edit/{{ _selected[0].uuid }}"
+      - type: iconButton
+        icon: mdi:clock-outline
+        tooltip: _("Schedule")
+        enabledConstraints:
+          minSelected: 1
+          maxSelected: 1
+        confirmationDialogConfig:
+          template: confirmation-critical
+          message: _("Before scheduling, make sure the array has been synced at least once. Use Tools → Sync to perform the initial sync for a new array.")
+          buttons:
+            - text: _("Cancel")
+              dialogResult: false
+              autofocus: true
+            - text: _("Ok")
+              dialogResult: true
+              class: omv-background-color-pair-primary
+        execute:
+          type: url
+          url: "/services/snapraidaio/configs/schedule/{{ _selected[0].uuid }}"
+      - type: menu
+        icon: mdi:tools
+        tooltip: _("Tools")
+        enabledConstraints:
+          minSelected: 1
+          maxSelected: 1
+        actions:
+          - text: _("Run Now")
+            icon: mdi:play-circle
+            execute:
+              type: taskDialog
+              taskDialog:
+                config:
+                  title: _("Run Now ...")
+                  startOnInit: true
+                  request:
+                    service: SnapRaidAio
+                    method: executeCommand
+                    params:
+                      uuid: "{{ _selected[0].uuid }}"
+                      command: "run"
+                successUrl: /services/snapraidaio/configs
+          - text: _("Force Sync")
+            icon: mdi:sync-alert
+            confirmationDialogConfig:
+              template: confirmation-danger
+              message: _("Are you sure you want to force a sync? This bypasses the delete and update thresholds.")
+            execute:
+              type: taskDialog
+              taskDialog:
+                config:
+                  title: _("Force Sync ...")
+                  startOnInit: true
+                  request:
+                    service: SnapRaidAio
+                    method: executeCommand
+                    params:
+                      uuid: "{{ _selected[0].uuid }}"
+                      command: "force-sync"
+                successUrl: /services/snapraidaio/configs
+          - text: _("Sync")
+            icon: mdi:sync
+            execute:
+              type: taskDialog
+              taskDialog:
+                config:
+                  title: _("Sync ...")
+                  startOnInit: true
+                  request:
+                    service: SnapRaidAio
+                    method: executeCommand
+                    params:
+                      uuid: "{{ _selected[0].uuid }}"
+                      command: "sync"
+                successUrl: /services/snapraidaio/configs
+          - text: _("Last Log")
+            icon: mdi:text-box-outline
+            execute:
+              type: taskDialog
+              taskDialog:
+                config:
+                  title: _("Last Log")
+                  startOnInit: true
+                  request:
+                    service: SnapRaidAio
+                    method: executeCommand
+                    params:
+                      uuid: "{{ _selected[0].uuid }}"
+                      command: "last-log"
+                successUrl: /services/snapraidaio/configs
       - template: delete
         execute:
           type: request
