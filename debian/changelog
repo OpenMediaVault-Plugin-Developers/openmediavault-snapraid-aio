@@ -22,6 +22,10 @@ openmediavault-snapraid-aio (8.2) stable; urgency=low
   * Change hook_notification from textarea to textInput and clarify hint
     that an absolute path to an executable script is required
   * Clarify retention_days hint that 0 disables log file saving
+  * Un-nest Apprise check in snapraid-aio-script.sh so auto-installation and
+    initial notifications run even when other notification services are disabled
+    (fixes auanasgheps/snapraid-aio-script#169)
+  * Auto-install pipx and Apprise during notification test if not yet installed
 
  -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 29 Oct 2026 00:00:00 +0000
 
