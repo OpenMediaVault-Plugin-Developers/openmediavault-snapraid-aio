@@ -691,13 +691,16 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         foreach (explode(",", $config["apprise_url"]) as $url) {
             $url = trim($url);
             if (empty($url)) continue;
-            $proc = new \OMV\System\Process([$appriseBin, "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($url)]);
+            $proc = new \OMV\System\Process([
+                $appriseBin, "-v", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($url)
+            ]);
             $proc->setRedirect2to1(true);
             $proc->setQuiet(true);
             $output = [];
             $proc->execute($output, $exitCode);
             if ($exitCode !== 0) {
-                $errors[] = sprintf("URL '%s' failed: %s", $url, implode("\n", $output));
+                $details = !empty($output) ? implode("\n", $output) : sprintf("Process exited with code %d. Check URL format and network connectivity.", $exitCode);
+                $errors[] = sprintf("URL '%s' failed: %s", $url, $details);
             }
         }
         if (!empty($errors)) {
@@ -711,15 +714,16 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
             throw new \OMV\Exception("Apprise email is not enabled or has no URL configured.");
         }
         $proc = new \OMV\System\Process([
-            $appriseBin, "-i", "html", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($config["apprise_email_url"])
+            $appriseBin, "-v", "-i", "html", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($config["apprise_email_url"])
         ]);
         $proc->setRedirect2to1(true);
         $proc->setQuiet(true);
         $output = [];
         $proc->execute($output, $exitCode);
         if ($exitCode !== 0) {
+            $details = !empty($output) ? implode("\n", $output) : sprintf("Process exited with code %d. Check URL format and network connectivity.", $exitCode);
             throw new \OMV\Exception(
-                sprintf("Apprise email failed: %s", implode("\n", $output))
+                sprintf("Apprise email failed: %s", $details)
             );
         }
     }

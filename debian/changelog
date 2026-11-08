@@ -26,6 +26,7 @@ openmediavault-snapraid-aio (8.2) stable; urgency=low
     initial notifications run even when other notification services are disabled
     (fixes auanasgheps/snapraid-aio-script#169)
   * Auto-install pipx and Apprise during notification test if not yet installed
+  * Pass verbose flag to Apprise during notification tests for detailed error diagnostics
 
  -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 29 Oct 2026 00:00:00 +0000
 
