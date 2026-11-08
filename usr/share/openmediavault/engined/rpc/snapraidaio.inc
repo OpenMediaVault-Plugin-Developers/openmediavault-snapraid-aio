@@ -64,8 +64,8 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
             $obj["array_name"] = $labelMap[$obj["snapraid_conf"]] ?? "";
             if (!empty($obj["cron_uuid"])) {
                 try {
-                    \OMV\Rpc\Rpc::call("Cron", "get", ["uuid" => $obj["cron_uuid"]], $context);
-                    $obj["scheduled"] = true;
+                    $cron = \OMV\Rpc\Rpc::call("Cron", "get", ["uuid" => $obj["cron_uuid"]], $context);
+                    $obj["scheduled"] = boolval($cron["enable"] ?? false);
                 } catch (\Exception $e) {
                     // Cron entry no longer exists; report unscheduled without
                     // writing back to the DB to avoid triggering an Apply banner.
@@ -201,7 +201,7 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         $objects = [];
         $status = "";
         // check to see if docker is installed and running
-        if (file_exists("/lib/systemd/system/docker.service")) {
+        if (file_exists("/usr/bin/docker")) {
             $systemCtl = new \OMV\System\SystemCtl("docker");
             $running = $systemCtl->isActive();
             $status = $running ? gettext("running") : gettext("stopped");
@@ -226,6 +226,9 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
                     continue;
                 }
                 $parts = explode(",", $cnt, 3);
+                if (count($parts) < 3) {
+                    continue;
+                }
                 $objects[] = [
                     "image" => $parts[0],
                     "name" => $parts[1],
@@ -296,14 +299,14 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
                 if (!$completed && strpos($lines[$j], 'Total time elapsed for SnapRAID') !== false) {
                     $completed = true;
                 }
-                if (!$hasWarn && strpos($lines[$j], ': WARN: \'') !== false) {
+                if (!$hasWarn && (strpos($lines[$j], ': WARN: \'') !== false || strpos($lines[$j], ': ERROR: \'') !== false)) {
                     $hasWarn = true;
                 }
             }
-            if (!$completed) {
-                $status = 'Started';
-            } elseif ($hasWarn) {
+            if ($hasWarn) {
                 $status = 'WARNING';
+            } elseif (!$completed) {
+                $status = 'Started';
             } else {
                 $status = 'OK';
             }
@@ -547,13 +550,43 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
 
         $config = $this->callMethod("getConfig", ["uuid" => $params["uuid"]], $context);
 
-        $appriseBin = trim(shell_exec("command -v apprise 2>/dev/null") ?: "");
-        if (empty($appriseBin)) {
-            $appriseBin = "/root/.local/bin/apprise";
-        }
-        if (!is_executable($appriseBin)) {
+        if ($params["channel"] === "apprise") {
+            if (empty($config["apprise"]) || empty($config["apprise_url"])) {
+                throw new \OMV\Exception("Apprise is not enabled or has no URLs configured.");
+            }
+        } elseif ($params["channel"] === "apprise_email") {
+            if (empty($config["apprise_email"]) || empty($config["apprise_email_url"])) {
+                throw new \OMV\Exception("Apprise email is not enabled or has no URL configured.");
+            }
+        } else {
             throw new \OMV\Exception(
-                "Apprise binary not found. Run the AIO script at least once to auto-install it."
+                sprintf("Unknown notification channel '%s'.", $params["channel"])
+            );
+        }
+
+        $appriseBin = $this->getOrInstallApprise();
+
+        $subject = "SnapRAID AIO - test notification";
+        $body    = "This is a test notification from SnapRAID AIO.";
+
+        if ($params["channel"] === "apprise") {
+            $this->testAppriseUrls($config, $appriseBin, $subject, $body);
+        } elseif ($params["channel"] === "apprise_email") {
+            $this->testAppriseEmail($config, $appriseBin, $subject, $body);
+        }
+    }
+
+    private function getOrInstallApprise(): string
+    {
+        $appriseBin = $this->resolveAppriseBinary();
+        if (empty($appriseBin)) {
+            $this->installApprise();
+            $appriseBin = $this->resolveAppriseBinary();
+        }
+
+        if (empty($appriseBin) || !is_executable($appriseBin)) {
+            throw new \OMV\Exception(
+                "Apprise binary not found after installation. Expected at /root/.local/bin/apprise or in PATH."
             );
         }
 
@@ -563,24 +596,89 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         $verifyOutput = [];
         $verifyProc->execute($verifyOutput, $verifyExitCode);
         if ($verifyExitCode !== 0) {
-            throw new \OMV\Exception(
-                "Apprise is installed but its Python environment is broken (ModuleNotFoundError). " .
-                "Re-run the AIO script to reinstall it: %s",
+            throw new \OMV\Exception(sprintf(
+                "Apprise is installed but its Python environment is broken: %s",
                 implode(" ", $verifyOutput)
-            );
+            ));
         }
 
-        $subject = "SnapRAID AIO - test notification";
-        $body    = "This is a test notification from SnapRAID AIO.";
+        return $appriseBin;
+    }
 
-        if ($params["channel"] === "apprise") {
-            $this->testAppriseUrls($config, $appriseBin, $subject, $body);
-        } elseif ($params["channel"] === "apprise_email") {
-            $this->testAppriseEmail($config, $appriseBin, $subject, $body);
-        } else {
-            throw new \OMV\Exception(
-                sprintf("Unknown notification channel '%s'.", $params["channel"])
-            );
+    private function resolveAppriseBinary(): string
+    {
+        $appriseBin = trim(shell_exec("command -v apprise 2>/dev/null") ?: "");
+        if (!empty($appriseBin) && is_executable($appriseBin)) {
+            return $appriseBin;
+        }
+        if (is_executable("/root/.local/bin/apprise")) {
+            return "/root/.local/bin/apprise";
+        }
+        $pipxBinDir = trim(shell_exec("pipx environment 2>/dev/null | sed -n 's/^PIPX_BIN_DIR=//p'") ?: "");
+        if (!empty($pipxBinDir) && is_executable($pipxBinDir . "/apprise")) {
+            return $pipxBinDir . "/apprise";
+        }
+        return "";
+    }
+
+    private function installApprise(): void
+    {
+        $pipxBin = trim(shell_exec("command -v pipx 2>/dev/null") ?: "");
+        if (empty($pipxBin)) {
+            $this->installPipx();
+        }
+
+        $proc = new \OMV\System\Process(["pipx", "install", "apprise"]);
+        $proc->setRedirect2to1(true);
+        $proc->setQuiet(true);
+        $output = [];
+        $proc->execute($output, $exitCode);
+        if ($exitCode !== 0) {
+            throw new \OMV\Exception(sprintf(
+                "Failed to install Apprise via pipx: %s",
+                implode("\n", $output)
+            ));
+        }
+    }
+
+    private function installPipx(): void
+    {
+        $updateProc = new \OMV\System\Process([
+            "env",
+            "DEBIAN_FRONTEND=noninteractive",
+            "apt-get",
+            "-qq",
+            "update"
+        ]);
+        $updateProc->setRedirect2to1(true);
+        $updateProc->setQuiet(true);
+        $updateOutput = [];
+        $updateProc->execute($updateOutput, $updateExitCode);
+        if ($updateExitCode !== 0) {
+            throw new \OMV\Exception(sprintf(
+                "Failed to update package lists before installing pipx: %s",
+                implode("\n", $updateOutput)
+            ));
+        }
+
+        $installProc = new \OMV\System\Process([
+            "env",
+            "DEBIAN_FRONTEND=noninteractive",
+            "apt-get",
+            "-qq",
+            "install",
+            "-y",
+            "pipx"
+        ]);
+        $installProc->setRedirect2to1(true);
+        $installProc->setQuiet(true);
+        $installOutput = [];
+        $installProc->execute($installOutput, $installExitCode);
+        if ($installExitCode !== 0) {
+            throw new \OMV\Exception(sprintf(
+                "Failed to install pipx: %s",
+                implode("\n", $installOutput)
+            ));
         }
     }
 
@@ -593,13 +691,16 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
         foreach (explode(",", $config["apprise_url"]) as $url) {
             $url = trim($url);
             if (empty($url)) continue;
-            $proc = new \OMV\System\Process([$appriseBin, "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($url)]);
+            $proc = new \OMV\System\Process([
+                $appriseBin, "-v", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($url)
+            ]);
             $proc->setRedirect2to1(true);
             $proc->setQuiet(true);
             $output = [];
             $proc->execute($output, $exitCode);
             if ($exitCode !== 0) {
-                $errors[] = sprintf("URL '%s' failed: %s", $url, implode("\n", $output));
+                $details = !empty($output) ? implode("\n", $output) : sprintf("Process exited with code %d. Check URL format and network connectivity.", $exitCode);
+                $errors[] = sprintf("URL '%s' failed: %s", $url, $details);
             }
         }
         if (!empty($errors)) {
@@ -613,15 +714,16 @@ class OMVRpcServiceSnapRaidAio extends \OMV\Rpc\ServiceAbstract
             throw new \OMV\Exception("Apprise email is not enabled or has no URL configured.");
         }
         $proc = new \OMV\System\Process([
-            $appriseBin, "-i", "html", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($config["apprise_email_url"])
+            $appriseBin, "-v", "-i", "html", "-t", escapeshellarg($subject), "-b", escapeshellarg($body), escapeshellarg($config["apprise_email_url"])
         ]);
         $proc->setRedirect2to1(true);
         $proc->setQuiet(true);
         $output = [];
         $proc->execute($output, $exitCode);
         if ($exitCode !== 0) {
+            $details = !empty($output) ? implode("\n", $output) : sprintf("Process exited with code %d. Check URL format and network connectivity.", $exitCode);
             throw new \OMV\Exception(
-                sprintf("Apprise email failed: %s", implode("\n", $output))
+                sprintf("Apprise email failed: %s", $details)
             );
         }
     }

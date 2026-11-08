@@ -137,15 +137,16 @@ main(){
       -d '{"content": "SnapRAID Script Job started"}' \
       "$DISCORD_WEBHOOK_URL"
     fi
-    if [ "$APPRISE" -eq 1 ] || [ "$APPRISE_EMAIL" -eq 1 ] ; then
-      echo "Apprise service notification is enabled."
-      check_and_install_apprise
-      if [ "$APPRISE" -eq 1 ] ; then
+  fi
+
+  if [ "$APPRISE" -eq 1 ] || [ "$APPRISE_EMAIL" -eq 1 ] ; then
+    echo "Apprise service notification is enabled."
+    check_and_install_apprise
+    if [ "$APPRISE" -eq 1 ] ; then
       for APPRISE_URL_U in "${APPRISE_URL[@]}"; do
-      "$APPRISE_BIN" -b "SnapRAID Script Job started" "$APPRISE_URL_U"
+        "$APPRISE_BIN" -b "SnapRAID Script Job started" "$APPRISE_URL_U"
       done
-      fi
-    fi  
+    fi
   fi
 
   ### Check if SnapRAID is found

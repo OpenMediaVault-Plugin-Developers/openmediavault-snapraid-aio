@@ -1,3 +1,35 @@
+openmediavault-snapraid-aio (8.2) stable; urgency=low
+
+  * Fix custom hook and notification textareas not rendering in the UI:
+    correct field type from textArea to textarea and property from
+    monospaced to monospace (fixes #2)
+  * Ensure state directory /var/lib/snapraidaio is managed by Salt deployment
+    and created during dev update to prevent sync warning and delayed scrub
+    count failures
+  * Default SNAPRAID_LOG_DIR in config file template to /root when left empty,
+    matching the WebGUI hint and RPC expectations
+  * Fix conditionally visible fields in config form using type: disabled
+    instead of type: hidden, preventing omitted form fields and schema
+    validation errors on save
+  * Fix fatal PHP 8 TypeError in testNotification RPC when Apprise
+    verification fails by wrapping exception message in sprintf
+  * Accurately report scheduled status in getConfigList by inspecting
+    the cron task's enable property
+  * Report WARNING in getLastRunStatuses for aborted runs with warnings or
+    errors rather than reporting Started
+  * Check /usr/bin/docker in getContainers to detect Docker across different
+    systemd unit install paths
+  * Change hook_notification from textarea to textInput and clarify hint
+    that an absolute path to an executable script is required
+  * Clarify retention_days hint that 0 disables log file saving
+  * Un-nest Apprise check in snapraid-aio-script.sh so auto-installation and
+    initial notifications run even when other notification services are disabled
+    (fixes auanasgheps/snapraid-aio-script#169)
+  * Auto-install pipx and Apprise during notification test if not yet installed
+  * Pass verbose flag to Apprise during notification tests for detailed error diagnostics
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 29 Oct 2026 00:00:00 +0000
+
 openmediavault-snapraid-aio (8.1) stable; urgency=low
 
   * Comprehensive update bringing full SnapRAID AIO Script functionality to the
