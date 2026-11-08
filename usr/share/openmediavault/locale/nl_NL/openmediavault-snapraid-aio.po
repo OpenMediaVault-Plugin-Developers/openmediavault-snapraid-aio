@@ -3,13 +3,17 @@
 # This file is distributed under the same license as the openmediavault-snapraid-aio package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# Stephan Paternotte <stephan@paternottes.net>, 2026
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: openmediavault-snapraid-aio\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 10:45+0000\n"
+"POT-Creation-Date: 2026-11-08 22:30+0000\n"
 "PO-Revision-Date: 2026-08-20 10:47+0000\n"
+"Last-Translator: Stephan Paternotte <stephan@paternottes.net>, 2026\n"
 "Language-Team: Dutch (https://app.transifex.com/openmediavault-plugin-developers/teams/1854/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,25 +22,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "/etc/snapraid does not exist!"
-msgstr ""
+msgstr "/etc/snapraid bestaat niet!"
 
 msgid "AIO config file not found. Please apply settings first."
-msgstr ""
+msgstr "AIO config-bestand niet gevonden. Pas eerst instellingen toe."
 
 msgid ""
 "Abort sync if more than N files were deleted since last run. 0 disables."
 msgstr ""
+"Synchronisatie afbreken als er sinds de laatste uitvoering meer dan N "
+"bestanden zijn verwijderd. 0 schakelt dit uit."
 
 msgid ""
 "Abort sync if more than N files were updated since last run. 0 disables."
 msgstr ""
+"Synchronisatie afbreken als er sinds de laatste uitvoering meer dan N "
+"bestanden zijn bijgewerkt. 0 schakelt dit uit."
 
 msgid ""
 "Absolute path to the directory for log files. Leave empty to use /root."
 msgstr ""
+"Absoluut pad naar de map voor logbestanden. Laat leeg om /root te gebruiken."
 
 msgid "Add/Delete ratio threshold"
-msgstr ""
+msgstr "Verhoudingsdrempel toevoegen/verwijderen"
 
 msgid ""
 "Advanced. Space-separated glob patterns to exclude from diff counts. Misuse "
@@ -44,30 +53,38 @@ msgid ""
 "configuration for files that change often. Example&colon; *.tmp /var/cache/*"
 " */backup/*"
 msgstr ""
+"Geavanceerd. Met spaties gescheiden glob-patronen die je wilt uitsluiten van"
+" diff-tellingen. Misbruik zorgt ervoor dat de pariteit zonder waarschuwing "
+"uit sync raakt — gebruik de exclude-configuratie van SnapRAID voor bestanden"
+" die vaak veranderen. Voorbeeld: *.tmp /var/cache/* */backup/*"
 
 msgid "After hook command"
-msgstr ""
+msgstr "Na haakopdracht"
 
 msgid "After hook name"
-msgstr ""
+msgstr "Na haaknaam"
 
 msgid ""
 "Allow sync even if delete threshold is exceeded, if enough files were also "
 "added. 0 disables. Range&colon; 0.0–1.0. Example&colon; 0.76 means at least "
 "76% of deleted files must have a matching add."
 msgstr ""
+"Synchronisatie toestaan, zelfs als de verwijderdrempel wordt overschreden, "
+"als er ook genoeg bestanden worden toegevoegd. 0 schakelt dit uit. Bereik: "
+"0,0–1,0. Voorbeeld: 0,76 betekent dat minstens 76% van de verwijderde "
+"bestanden een overeenkomende toevoeging moet hebben."
 
 msgid "Apprise Email Notifications"
-msgstr ""
+msgstr "Apprise E-mailmeldingen"
 
 msgid "Apprise Email URL"
-msgstr ""
+msgstr "Apprise e-mail-URL"
 
 msgid "Apprise Notifications"
-msgstr ""
+msgstr "Apprise meldingen"
 
 msgid "Apprise URLs"
-msgstr ""
+msgstr "Apprise-URL's"
 
 msgid ""
 "Apprise can send notifications to Telegram, Discord, Slack, Gotify, and many"
@@ -75,8 +92,8 @@ msgid ""
 "when a warning is issued. See the <a href='https://appriseit.com/services/' "
 "target='_blank'>supported services list</a> for all available integrations. "
 "Apprise is not pre-installed — if missing, it will be installed "
-"automatically via pipx on the first run. An internet connection is required "
-"at that point."
+"automatically via pipx on the first test or run. An internet connection is "
+"required at that point."
 msgstr ""
 
 msgid ""
@@ -84,140 +101,157 @@ msgid ""
 "href='https://appriseit.com/services/email/' target='_blank'>Apprise email "
 "documentation</a> for SMTP and provider URL format examples."
 msgstr ""
+"Apprise e-mailservice-URL. Raadpleeg de <a "
+"href='https://appriseit.com/services/email/' target='_blank'>Apprise "
+"e-maildocumentatie</a> voor voorbeelden van SMTP- en provider-URL-formaten."
 
 msgid "Apprise email test sent. Check your inbox."
-msgstr ""
+msgstr "Apprise e-mailtest verzonden. Controleer je Postvak In."
 
 msgid "Apprise test notification sent. Check your configured services."
 msgstr ""
+"Apprise-testmelding verzonden. Controleer je geconfigureerde diensten."
 
 msgid "April"
-msgstr ""
+msgstr "April"
 
 msgid ""
 "Are you sure you want to force a sync? This bypasses the delete and update "
 "thresholds."
 msgstr ""
+"Weet je zeker dat je een synchronisatie wilt afdwingen? Dit omzeilt de "
+"verwijderings- en update-drempels."
 
 msgid "Array"
-msgstr ""
+msgstr "Array"
 
 msgid "At reboot"
-msgstr ""
+msgstr "Bij opnieuw opstarten"
 
 msgid "Attach report on warnings"
-msgstr ""
+msgstr "Rapport over waarschuwingen toevoegen"
 
 msgid "Attach the full report to the email when a warning is issued."
 msgstr ""
+"Het volledige rapport aan de e-mail toevoegen wanneer er een waarschuwing "
+"wordt uitgegeven."
 
 msgid ""
 "Attach the full report to the notification when a warning is issued. Not all"
 " services support attachments."
 msgstr ""
+"Het volledige rapport aan de melding toevoegen wanneer er een waarschuwing "
+"wordt uitgegeven. Niet alle diensten ondersteunen bijlagen."
 
 msgid "August"
-msgstr ""
+msgstr "Augustus"
 
 msgid "Before hook command"
-msgstr ""
+msgstr "Voor de haakopdracht"
 
 msgid "Before hook name"
-msgstr ""
+msgstr "Voor de haaknaam"
 
 msgid ""
 "Before scheduling, make sure the array has been synced at least once. Use "
 "Tools → Sync to perform the initial sync for a new array."
 msgstr ""
+"Voordat je een planning maakt, zorg ervoor dat de array minstens één keer is"
+" gesynchroniseerd. Gebruik Hulpmiddelen → Synchroniseren om de eerste "
+"synchronisatie voor een nieuwe array uit te voeren."
 
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 msgid "Comment"
-msgstr ""
+msgstr "Opmerking"
 
 msgid "Config File"
-msgstr ""
+msgstr "Config-bestand"
 
 msgid "Configs"
-msgstr ""
+msgstr "Configs"
 
 msgid ""
 "Containers to stop or pause before SnapRAID runs. All selected containers "
 "are stopped or paused together."
 msgstr ""
+"Containers stoppen of pauzeren voordat SnapRAID draait. Alle geselecteerde "
+"containers worden gezamenlijk gestopt of gepauzeerd."
 
 msgid "Create"
-msgstr ""
+msgstr "Aanmaken"
 
 msgid "Created config."
-msgstr ""
+msgstr "Config aangemaakt."
 
 msgid "Custom hooks"
-msgstr ""
+msgstr "Aangepaste haken"
 
 msgid "Custom notification hook"
-msgstr ""
+msgstr "Aangepaste meldingshaak"
 
 msgid "Custom schedule"
-msgstr ""
+msgstr "Aangepaste planning"
 
 msgid "Daily"
-msgstr ""
+msgstr "Dagelijks"
 
 msgid "Day of month"
-msgstr ""
+msgstr "Dag van maand"
 
 msgid "Day of week"
-msgstr ""
+msgstr "Dag van week"
 
-msgid "Days to keep log files. 0 keeps logs forever."
+msgid ""
+"Days to keep log files. 0 disables saving log files, which also disables the"
+" Last Log tool."
 msgstr ""
 
 msgid "December"
-msgstr ""
+msgstr "December"
 
 msgid "Delete threshold"
-msgstr ""
+msgstr "Drempel verwijderen"
 
 msgid "Display name shown in the log output."
-msgstr ""
+msgstr "Weergavenaam die in de logboekuitvoer wordt weergegeven."
 
 msgid "Docker and service management"
-msgstr ""
+msgstr "Docker en servicemanagement"
 
 msgid "Docker container list"
-msgstr ""
+msgstr "Docker containerlijst"
 
 msgid "Docker mode"
-msgstr ""
+msgstr "Docker-modus"
 
 msgid "Edit"
-msgstr ""
+msgstr "Bewerken"
 
 msgid "Edit config."
-msgstr ""
+msgstr "Config bewerken"
 
 msgid "Email Notifications"
-msgstr ""
+msgstr "E-mailmeldingen"
 
 msgid "Enable"
-msgstr ""
+msgstr "Inschakelen"
 
 msgid "Enable Apprise"
-msgstr ""
+msgstr "Apprise inschakelen"
 
 msgid "Enable Apprise email"
-msgstr ""
+msgstr "Apprise E-mail inschakelen"
 
 msgid "Enable Healthchecks.io"
-msgstr ""
+msgstr "Healthchecks.io inschakelen"
 
 msgid "Enable custom hooks"
-msgstr ""
+msgstr "Aangepaste haken inschakelen"
 
 msgid "Enable email notifications"
-msgstr ""
+msgstr "E-mailmeldingen inschakelen"
 
 msgid ""
 "Enter each Apprise URL and press Enter to add it. Multiple services are "
@@ -225,264 +259,306 @@ msgid ""
 "target='_blank'>Apprise services page</a> for URL format and configuration "
 "examples."
 msgstr ""
+"Voer elke Apprise-URL in en druk op Enter om deze toe te voegen. Meerdere "
+"services worden ondersteund. Raadpleeg de <a "
+"href='https://appriseit.com/services/' target='_blank'>Apprise-"
+"servicespagina</a> voor het URL-formaat en voorbeelden van configuratie."
 
 msgid "Every day"
-msgstr ""
+msgstr "Elke dag"
 
 msgid "Every month"
-msgstr ""
+msgstr "Elke maand"
 
 msgid "February"
-msgstr ""
+msgstr "Februari"
 
 msgid ""
 "For full documentation and configuration reference, see the <a "
 "href='https://github.com/auanasgheps/snapraid-aio-script' "
 "target='_blank'>SnapRAID AIO Script project page</a>."
 msgstr ""
+"Voor volledige documentatie en configuratiehandleiding, zie de <a "
+"href='https://github.com/auanasgheps/snapraid-aio-script' "
+"target='_blank'>SnapRAID AIO Script-projectpagina</a>."
 
 msgid "Force Sync"
-msgstr ""
+msgstr "Synchronisatie afdwingen"
 
 msgid "Force Sync ..."
-msgstr ""
+msgstr "Synchronisatie afdwingen…"
 
 msgid "Friday"
-msgstr ""
+msgstr "Vrijdag"
 
 msgid "Healthchecks URL"
-msgstr ""
+msgstr "Healthchecks URL"
 
 msgid "Healthchecks UUID"
-msgstr ""
+msgstr "Healthchecks UUID"
 
 msgid "Healthchecks.io"
-msgstr ""
+msgstr "Healthchecks.io"
 
 msgid "Hour"
-msgstr ""
+msgstr "Uur"
 
 msgid "Hourly"
-msgstr ""
+msgstr "Elk uur"
 
 msgid ""
 "If the array list is empty, configure an array using the SnapRAID plugin "
 "first, then return here."
 msgstr ""
+"Als de arraylijst leeg is, stel dan eerst een array in met de SnapRAID-"
+"plugin en kom daarna hier terug."
 
 msgid "Ignore pattern"
-msgstr ""
+msgstr "Patroon negeren"
 
 msgid ""
 "Immediately scrub newly synced blocks after each sync run. Increases runtime"
 " but catches errors on new data sooner."
 msgstr ""
+"Nieuw gesynchroniseerde blokken direct na elke synchronisatieronde "
+"opschonen. Het duurt wat langer, maar zo ontdek worden fouten in nieuwe data"
+" sneller ontdekt."
 
 msgid "Include SMART data in notification"
-msgstr ""
+msgstr "SMART-gegevens toevoegen in de melding"
 
 msgid ""
 "Include full SnapRAID output in the notification. Not recommended — may "
 "produce very large messages."
 msgstr ""
+"De volledige SnapRAID-uitvoer toevoegen aan de melding. Niet aan te raden — "
+"kan erg grote berichten opleveren."
 
 msgid "Include status in notification"
-msgstr ""
+msgstr "Status toevoegen in de melding"
 
 msgid ""
 "Invalid log directory: path must be absolute and contain no '..' components."
 msgstr ""
+"Ongeldige logboekmap: het pad moet absoluut zijn en mag geen '..' onderdelen"
+" bevatten."
 
 msgid "January"
-msgstr ""
+msgstr "Januari"
 
 msgid "July"
-msgstr ""
+msgstr "Juli"
 
 msgid "June"
-msgstr ""
+msgstr "Juni"
 
 msgid "Last Log"
-msgstr ""
+msgstr "Laatste logboek"
 
 msgid "Last Run"
-msgstr ""
+msgstr "Laatste uitvoering"
 
 msgid ""
-"Legacy option, superseded by Apprise. Script or command called instead of "
-"the default email. SUBJECT and BODY are passed as parameters. Runs as root —"
-" enter only trusted commands."
+"Legacy option, superseded by Apprise. Absolute path to an executable script "
+"called instead of the default email. SUBJECT and BODY are passed as "
+"parameters."
 msgstr ""
 
 msgid "Log SMART data"
-msgstr ""
+msgstr "SMART-gegevens bijhouden"
 
 msgid "Log SnapRAID status"
-msgstr ""
+msgstr "SnapRAID-status bijhouden"
 
 msgid "Log retention (days)"
-msgstr ""
+msgstr "Logbewaring (dagen)"
 
 msgid "Manage Docker containers / services"
-msgstr ""
+msgstr "Docker containers / services beheren"
 
 msgid "March"
-msgstr ""
+msgstr "Maart"
 
 msgid "May"
-msgstr ""
+msgstr "Mei"
 
 msgid "Minute"
-msgstr ""
+msgstr "Minuut"
 
 msgid "Monday"
-msgstr ""
+msgstr "Maandag"
 
 msgid "Month"
-msgstr ""
+msgstr "Maand"
 
 msgid "Monthly"
-msgstr ""
+msgstr "Maandelijks"
 
 msgid ""
 "No SnapRAID array selected. Please edit the config and choose an array."
 msgstr ""
+"Geen SnapRAID-array geselecteerd. Bewerk de configuratie en kies een array."
 
 msgid "November"
-msgstr ""
+msgstr "November"
 
 msgid ""
 "Number of times a threshold warning is issued before forcing a sync anyway. "
 "0 = always force, -1 = never force."
 msgstr ""
+"Aantal keren dat er een drempelwaarschuwing wordt gegeven voordat er toch "
+"een synchronisatie wordt afgedwongen. 0 = altijd afdwingen, -1 = nooit "
+"afdwingen."
 
 msgid "October"
-msgstr ""
+msgstr "Oktober"
 
 msgid "Ok"
-msgstr ""
+msgstr "Oké"
 
 msgid ""
 "Only change if using a self-hosted Healthchecks.io instance. Must include "
 "the trailing slash."
 msgstr ""
+"Alleen aanpassen bij gebruik van een zelfgehoste Healthchecks.io-instantie. "
+"Moet de schuine streep aan het einde bevatten."
 
 msgid "Only scrub blocks that have not been verified in the last N days."
 msgstr ""
+"Alleen de blokken opschonen die de afgelopen N dagen niet zijn "
+"gecontroleerd."
 
 msgid "Pause / unpause"
-msgstr ""
+msgstr "Pauzeren / Hervatten"
 
 msgid "Percentage of the array to verify per run."
-msgstr ""
+msgstr "Percentage van de array om per keer te controleren."
 
 msgid "Pre-hash data"
-msgstr ""
+msgstr "Pre-hash gegevens"
 
 msgid ""
 "Read data twice before syncing to detect silent read errors. Recommended."
 msgstr ""
+"Gegevens twee keer lezen alvorens te synchroniseren, om stille leesfouten te"
+" detecteren. Aanbevolen."
 
 msgid "Receiver address"
-msgstr ""
+msgstr "Ontvangeradres"
 
 msgid ""
 "Reports script errors to Healthchecks.io. Any warning will be reported as a "
 "failure."
 msgstr ""
+"Rapporteert scriptfouten aan Healthchecks.io. Elke waarschuwing wordt als "
+"een mislukking gerapporteerd."
 
 msgid "Run Now"
-msgstr ""
+msgstr "Nu uitvoeren"
 
 msgid "Run Now ..."
-msgstr ""
+msgstr "Nu uitvoeren…"
 
 msgid "Run SnapRAID status after each sync and include the output in the log."
 msgstr ""
+"SnapRAID-statuscheck uitvoeren na elke synchronisatie en de uitvoer opnemen "
+"in het logboek."
 
 msgid "Run SnapRAID's SMART check and include the output in the log."
 msgstr ""
+"SnapRAID's SMART-controle uitvoeren en de uitvoer opnemen in het logboek."
 
 msgid "Run after-hook before spindown"
-msgstr ""
+msgstr "'Na haak'-opdracht uitvoeren voor het stopzetten"
 
 msgid "Run scrub only every N script executions. 0 = scrub every time."
 msgstr ""
+"Alleen opschonen bij elke N script-uitvoeringen. 0 = altijd opschonen."
 
 msgid "Run the after hook before spinning down disks instead of after."
 msgstr ""
+"'Na haak'-opdracht uitvoeren voor het stopzetten van de schijven i.p.v. "
+"ervoor."
 
 msgid "Saturday"
-msgstr ""
+msgstr "Zaterdag"
 
 msgid "Schedule"
-msgstr ""
+msgstr "Planning"
 
 msgid "Scheduled"
-msgstr ""
+msgstr "Gepland"
 
 msgid "Scrub age (days)"
-msgstr ""
+msgstr "Leeftijd van opschoning (dagen)"
 
 msgid "Scrub delayed run"
-msgstr ""
+msgstr "Uitgestelde uitvoering opschonen"
 
 msgid "Scrub new blocks after sync"
-msgstr ""
+msgstr "Nieuwe blokken opschonen na synchronisatie"
 
 msgid "Scrub percentage"
-msgstr ""
+msgstr "Opschoningspercentage"
 
 msgid "Scrub settings"
-msgstr ""
+msgstr "Opschoningsinstellingen"
 
 msgid "Send email on completion"
-msgstr ""
+msgstr "Stuur een e-mail bij voltooiing"
 
 msgid "Sender address"
-msgstr ""
+msgstr "Afzenderadres"
 
 msgid "Sending Apprise email test ..."
-msgstr ""
+msgstr "Apprise E-mail test versturen…"
 
 msgid "Sending Apprise test notification ..."
-msgstr ""
+msgstr "Apprise test-melding versturen…"
 
 msgid ""
 "Sends the report via the email address configured in OMV's notification "
 "settings."
 msgstr ""
+"Verstuurt het rapport via het e-mailadres dat is geconfigureerd in de "
+"meldingsinstellingen van OMV."
 
 msgid "September"
-msgstr ""
+msgstr "September"
 
 msgid ""
 "Shell command or script path. Runs as root after SnapRAID operations "
 "complete — enter only trusted commands."
 msgstr ""
+"Shell-opdracht of scriptpad. Wordt uitgevoerd als root nadat SnapRAID-"
+"bewerkingen zijn voltooid. — Voer alleen vertrouwde opdrachten in."
 
 msgid ""
 "Shell command or script path. Runs as root before SnapRAID operations start "
 "— enter only trusted commands."
 msgstr ""
+"Shell-opdracht of scriptpad. Wordt uitgevoerd als root voordat SnapRAID-"
+"bewerkingen worden gestart. — Voer alleen vertrouwde opdrachten in."
 
 msgid "SnapRAID AIO"
-msgstr ""
+msgstr "SnapRAID AIO"
 
 msgid "SnapRAID array"
-msgstr ""
+msgstr "SnapRAID-array"
 
 msgid "SnapRAID log directory"
-msgstr ""
+msgstr "SnapRAID-logboekmap"
 
 msgid "SnapRAID options"
-msgstr ""
+msgstr "SnapRAID-opties"
 
 msgid "SnapRAID skips zero-sized files by default. Enable to include them."
 msgstr ""
+"SnapRAID slaat bestanden van nul byte standaard over. Schakel dit in om deze"
+" mee te nemen."
 
 msgid "SnapRAID-AIO"
-msgstr ""
+msgstr "SnapRAID-AIO"
 
 msgid ""
 "Spin down disks after the script completes using hd-idle. hd-idle is not "
@@ -491,90 +567,100 @@ msgid ""
 "for-automatic-disk-spindown' target='_blank'>installation instructions</a> "
 "before enabling this option."
 msgstr ""
+"Laat schijven stoppen met draaien nadat het script is voltooid met hd-idle. "
+"Hd-idle wordt niet automatisch geïnstalleerd — zie de <a "
+"href='https://github.com/auanasgheps/snapraid-aio-script#installing-hd-idle-"
+"for-automatic-disk-spindown' target='_blank'>installatie-instructies</a> "
+"voordat je deze optie inschakelt."
 
 msgid "Spin down disks when done"
-msgstr ""
+msgstr "Stop de schijven wanneer klaar"
 
 msgid "Stop / restart"
-msgstr ""
+msgstr "Stoppen / opnieuw starten"
 
 msgid ""
 "Stop or pause the selected Docker containers before SnapRAID runs and "
 "restart or unpause them when done. Prevents open file conflicts during sync."
 msgstr ""
+"Stop of pauzeer de geselecteerde Docker-containers voordat SnapRAID wordt "
+"uitgevoerd en start ze opnieuw of hervat ze als het klaar is. Dit voorkomt "
+"conflicten met open bestanden tijdens het synchroniseren."
 
 msgid "Sunday"
-msgstr ""
+msgstr "Zondag"
 
 msgid "Sync"
-msgstr ""
+msgstr "Synchroniseren"
 
 msgid "Sync ..."
-msgstr ""
+msgstr "Synchroniseren…"
 
 msgid "Sync thresholds"
-msgstr ""
+msgstr "Synchronisatiedrempels"
 
 msgid "Sync warning threshold"
-msgstr ""
+msgstr "Synchronisatie waarschuwingsdrempel"
 
 msgid "Sync zero-sized files"
-msgstr ""
+msgstr "Lege bestanden synchroniseren"
 
 msgid "Test Apprise"
-msgstr ""
+msgstr "Apprise testen"
 
 msgid "Test Apprise email"
-msgstr ""
+msgstr "Apprise E-mail testen"
 
 msgid "Thursday"
-msgstr ""
+msgstr "Donderdag"
 
 msgid "Time of execution"
-msgstr ""
+msgstr "Tijdstip van uitvoering"
 
 msgid "Tools"
-msgstr ""
+msgstr "Hulpmiddelen"
 
 msgid "Tuesday"
-msgstr ""
+msgstr "Dinsdag"
 
 msgid ""
 "UUID only, e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Do not paste the full "
 "ping URL — the base URL is added automatically."
 msgstr ""
+"Alleen UUID, bijv. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Plak niet de "
+"volledige ping-URL — de basis-URL wordt automatisch toegevoegd."
 
 msgid "Update threshold"
-msgstr ""
+msgstr "Drempel bijwerken"
 
 msgid "Updated schedule."
-msgstr ""
+msgstr "Planning bijgewerkt."
 
 msgid ""
 "Uses Apprise to send email. Does not require the Apprise feature above. See "
 "the <a href='https://appriseit.com/services/email/' target='_blank'>Apprise "
 "email documentation</a> for SMTP and provider setup. Apprise is not pre-"
 "installed — if missing, it will be installed automatically via pipx on the "
-"first run. An internet connection is required at that point."
+"first test or run. An internet connection is required at that point."
 msgstr ""
 
 msgid "Verbose output in notification"
-msgstr ""
+msgstr "Uitgebreide weergave in melding"
 
 msgid "Wednesday"
-msgstr ""
+msgstr "Woensdag"
 
 msgid "Weekly"
-msgstr ""
+msgstr "Wekelijks"
 
 msgid "Yearly"
-msgstr ""
+msgstr "Jaarlijks"
 
 msgid "not installed"
-msgstr ""
+msgstr "niet geïnstalleerd"
 
 msgid "running"
-msgstr ""
+msgstr "in uitvoering"
 
 msgid "stopped"
-msgstr ""
+msgstr "gestopt"

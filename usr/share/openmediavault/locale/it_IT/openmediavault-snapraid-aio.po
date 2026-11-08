@@ -3,13 +3,17 @@
 # This file is distributed under the same license as the openmediavault-snapraid-aio package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# Giovanni Scafora <scafora.giovanni@gmail.com>, 2026
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: openmediavault-snapraid-aio\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 10:45+0000\n"
+"POT-Creation-Date: 2026-11-08 22:30+0000\n"
 "PO-Revision-Date: 2026-08-20 10:47+0000\n"
+"Last-Translator: Giovanni Scafora <scafora.giovanni@gmail.com>, 2026\n"
 "Language-Team: Italian (https://app.transifex.com/openmediavault-plugin-developers/teams/1854/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,25 +22,33 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 msgid "/etc/snapraid does not exist!"
-msgstr ""
+msgstr "/etc/snapraid non esiste!"
 
 msgid "AIO config file not found. Please apply settings first."
 msgstr ""
+"File di configurazione AIO non trovato. Si prega di applicare prima le "
+"impostazioni."
 
 msgid ""
 "Abort sync if more than N files were deleted since last run. 0 disables."
 msgstr ""
+"Interrompi la sincronizzazione se sono stati eliminati più di N file "
+"dall'ultima esecuzione. 0 disabilita."
 
 msgid ""
 "Abort sync if more than N files were updated since last run. 0 disables."
 msgstr ""
+"Interrompi la sincronizzazione se sono stati aggiornati più di N file "
+"dall'ultima esecuzione. 0 disabilita."
 
 msgid ""
 "Absolute path to the directory for log files. Leave empty to use /root."
 msgstr ""
+"Percorso assoluto della directory per i file di log. Lasciare vuoto per "
+"usare /root."
 
 msgid "Add/Delete ratio threshold"
-msgstr ""
+msgstr "Soglia del rapporto aggiunte/eliminazioni"
 
 msgid ""
 "Advanced. Space-separated glob patterns to exclude from diff counts. Misuse "
@@ -44,30 +56,38 @@ msgid ""
 "configuration for files that change often. Example&colon; *.tmp /var/cache/*"
 " */backup/*"
 msgstr ""
+"Avanzate. Pattern glob separati da spazi da escludere dai conteggi dei diff."
+" Un uso improprio lascerà la parità non sincronizzata senza preavviso; "
+"utilizzare la configurazione di esclusione di SnapRAID per i file che "
+"cambiano spesso. Esempio&colon; *.tmp /var/cache/* */backup/*"
 
 msgid "After hook command"
-msgstr ""
+msgstr "Comando post-hook"
 
 msgid "After hook name"
-msgstr ""
+msgstr "Nome post-hook"
 
 msgid ""
 "Allow sync even if delete threshold is exceeded, if enough files were also "
 "added. 0 disables. Range&colon; 0.0–1.0. Example&colon; 0.76 means at least "
 "76% of deleted files must have a matching add."
 msgstr ""
+"Consenti la sincronizzazione anche se viene superata la soglia di "
+"eliminazione, a patto che sia stato aggiunto un numero sufficiente di file. "
+"0 disabilita. Intervallo&colon; 0.0–1.0. Esempio&colon; 0.76 significa che "
+"almeno il 76% dei file eliminati deve avere un'aggiunta corrispondente."
 
 msgid "Apprise Email Notifications"
-msgstr ""
+msgstr "Notifiche email Apprise"
 
 msgid "Apprise Email URL"
-msgstr ""
+msgstr "URL email Apprise"
 
 msgid "Apprise Notifications"
-msgstr ""
+msgstr "Notifiche Apprise"
 
 msgid "Apprise URLs"
-msgstr ""
+msgstr "URL Apprise"
 
 msgid ""
 "Apprise can send notifications to Telegram, Discord, Slack, Gotify, and many"
@@ -75,8 +95,8 @@ msgid ""
 "when a warning is issued. See the <a href='https://appriseit.com/services/' "
 "target='_blank'>supported services list</a> for all available integrations. "
 "Apprise is not pre-installed — if missing, it will be installed "
-"automatically via pipx on the first run. An internet connection is required "
-"at that point."
+"automatically via pipx on the first test or run. An internet connection is "
+"required at that point."
 msgstr ""
 
 msgid ""
@@ -84,140 +104,154 @@ msgid ""
 "href='https://appriseit.com/services/email/' target='_blank'>Apprise email "
 "documentation</a> for SMTP and provider URL format examples."
 msgstr ""
+"URL del servizio email Apprise. Fare riferimento alla <a "
+"href='https://appriseit.com/services/email/' target='_blank'>documentazione "
+"email di Apprise</a> per esempi di formato URL SMTP e provider."
 
 msgid "Apprise email test sent. Check your inbox."
-msgstr ""
+msgstr "Email di test Apprise inviata. Controlla la tua casella di posta."
 
 msgid "Apprise test notification sent. Check your configured services."
-msgstr ""
+msgstr "Notifica di test Apprise inviata. Controlla i servizi configurati."
 
 msgid "April"
-msgstr ""
+msgstr "Aprile"
 
 msgid ""
 "Are you sure you want to force a sync? This bypasses the delete and update "
 "thresholds."
 msgstr ""
+"Sei sicuro di voler forzare la sincronizzazione? Questa operazione ignora le"
+" soglie di eliminazione e aggiornamento."
 
 msgid "Array"
-msgstr ""
+msgstr "Array"
 
 msgid "At reboot"
-msgstr ""
+msgstr "Al riavvio"
 
 msgid "Attach report on warnings"
-msgstr ""
+msgstr "Allega rapporto in caso di avvisi"
 
 msgid "Attach the full report to the email when a warning is issued."
-msgstr ""
+msgstr "Allega il rapporto completo all'email quando viene emesso un avviso."
 
 msgid ""
 "Attach the full report to the notification when a warning is issued. Not all"
 " services support attachments."
 msgstr ""
+"Allega il rapporto completo alla notifica quando viene emesso un avviso. Non"
+" tutti i servizi supportano gli allegati."
 
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 msgid "Before hook command"
-msgstr ""
+msgstr "Comando pre-hook"
 
 msgid "Before hook name"
-msgstr ""
+msgstr "Nome pre-hook"
 
 msgid ""
 "Before scheduling, make sure the array has been synced at least once. Use "
 "Tools → Sync to perform the initial sync for a new array."
 msgstr ""
+"Prima della pianificazione, assicurarsi che l'array sia stato sincronizzato "
+"almeno una volta. Utilizzare Strumenti → Sincronizzazione per eseguire la "
+"sincronizzazione iniziale per un nuovo array."
 
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 msgid "Comment"
-msgstr ""
+msgstr "Commento"
 
 msgid "Config File"
-msgstr ""
+msgstr "File di configurazione"
 
 msgid "Configs"
-msgstr ""
+msgstr "Configurazioni"
 
 msgid ""
 "Containers to stop or pause before SnapRAID runs. All selected containers "
 "are stopped or paused together."
 msgstr ""
+"Container da arrestare o mettere in pausa prima dell'esecuzione di SnapRAID."
+" Tutti i container selezionati vengono arrestati o messi in pausa insieme."
 
 msgid "Create"
-msgstr ""
+msgstr "Crea"
 
 msgid "Created config."
-msgstr ""
+msgstr "Configurazione creata."
 
 msgid "Custom hooks"
-msgstr ""
+msgstr "Hook personalizzati"
 
 msgid "Custom notification hook"
-msgstr ""
+msgstr "Hook di notifica personalizzato"
 
 msgid "Custom schedule"
-msgstr ""
+msgstr "Pianificazione personalizzata"
 
 msgid "Daily"
-msgstr ""
+msgstr "Giornaliero"
 
 msgid "Day of month"
-msgstr ""
+msgstr "Giorno del mese"
 
 msgid "Day of week"
-msgstr ""
+msgstr "Giorno della settimana"
 
-msgid "Days to keep log files. 0 keeps logs forever."
+msgid ""
+"Days to keep log files. 0 disables saving log files, which also disables the"
+" Last Log tool."
 msgstr ""
 
 msgid "December"
-msgstr ""
+msgstr "Dicembre"
 
 msgid "Delete threshold"
-msgstr ""
+msgstr "Soglia di eliminazione"
 
 msgid "Display name shown in the log output."
-msgstr ""
+msgstr "Nome visualizzato nell'output dei log."
 
 msgid "Docker and service management"
-msgstr ""
+msgstr "Gestione Docker e servizi"
 
 msgid "Docker container list"
-msgstr ""
+msgstr "Elenco container Docker"
 
 msgid "Docker mode"
-msgstr ""
+msgstr "Modalità Docker"
 
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
 msgid "Edit config."
-msgstr ""
+msgstr "Modifica configurazione."
 
 msgid "Email Notifications"
-msgstr ""
+msgstr "Notifiche email"
 
 msgid "Enable"
-msgstr ""
+msgstr "Abilita"
 
 msgid "Enable Apprise"
-msgstr ""
+msgstr "Abilita Apprise"
 
 msgid "Enable Apprise email"
-msgstr ""
+msgstr "Abilita email Apprise"
 
 msgid "Enable Healthchecks.io"
-msgstr ""
+msgstr "Abilita Healthchecks.io"
 
 msgid "Enable custom hooks"
-msgstr ""
+msgstr "Abilita hook personalizzati"
 
 msgid "Enable email notifications"
-msgstr ""
+msgstr "Abilita notifiche email"
 
 msgid ""
 "Enter each Apprise URL and press Enter to add it. Multiple services are "
@@ -225,264 +259,305 @@ msgid ""
 "target='_blank'>Apprise services page</a> for URL format and configuration "
 "examples."
 msgstr ""
+"Inserire ciascun URL Apprise e premere Invio per aggiungerlo. Sono "
+"supportati più servizi. Fare riferimento alla <a "
+"href='https://appriseit.com/services/' target='_blank'>pagina dei servizi "
+"Apprise</a> per esempi di formato URL e configurazione."
 
 msgid "Every day"
-msgstr ""
+msgstr "Ogni giorno"
 
 msgid "Every month"
-msgstr ""
+msgstr "Ogni mese"
 
 msgid "February"
-msgstr ""
+msgstr "Febbraio"
 
 msgid ""
 "For full documentation and configuration reference, see the <a "
 "href='https://github.com/auanasgheps/snapraid-aio-script' "
 "target='_blank'>SnapRAID AIO Script project page</a>."
 msgstr ""
+"Per la documentazione completa e il riferimento di configurazione, "
+"consultare la <a href='https://github.com/auanasgheps/snapraid-aio-script' "
+"target='_blank'>pagina del progetto SnapRAID AIO Script</a>."
 
 msgid "Force Sync"
-msgstr ""
+msgstr "Forza sincronizzazione"
 
 msgid "Force Sync ..."
-msgstr ""
+msgstr "Forza sincronizzazione..."
 
 msgid "Friday"
-msgstr ""
+msgstr "Venerdì"
 
 msgid "Healthchecks URL"
-msgstr ""
+msgstr "URL Healthchecks"
 
 msgid "Healthchecks UUID"
-msgstr ""
+msgstr "UUID Healthchecks"
 
 msgid "Healthchecks.io"
-msgstr ""
+msgstr "Healthchecks.io"
 
 msgid "Hour"
-msgstr ""
+msgstr "Ora"
 
 msgid "Hourly"
-msgstr ""
+msgstr "Orario"
 
 msgid ""
 "If the array list is empty, configure an array using the SnapRAID plugin "
 "first, then return here."
 msgstr ""
+"Se l'elenco degli array è vuoto, configurare prima un array utilizzando il "
+"plugin SnapRAID, quindi tornare qui."
 
 msgid "Ignore pattern"
-msgstr ""
+msgstr "Pattern di esclusione"
 
 msgid ""
 "Immediately scrub newly synced blocks after each sync run. Increases runtime"
 " but catches errors on new data sooner."
 msgstr ""
+"Esegui subito lo scrub dei blocchi appena sincronizzati dopo ogni esecuzione"
+" della sincronizzazione. Aumenta i tempi di esecuzione ma rileva prima gli "
+"errori sui nuovi dati."
 
 msgid "Include SMART data in notification"
-msgstr ""
+msgstr "Includi dati SMART nella notifica"
 
 msgid ""
 "Include full SnapRAID output in the notification. Not recommended — may "
 "produce very large messages."
 msgstr ""
+"Includi l'output completo di SnapRAID nella notifica. Non consigliato — "
+"potrebbe produrre messaggi molto grandi."
 
 msgid "Include status in notification"
-msgstr ""
+msgstr "Includi lo stato nella notifica"
 
 msgid ""
 "Invalid log directory: path must be absolute and contain no '..' components."
 msgstr ""
+"Directory di log non valida: il percorso deve essere assoluto e non "
+"contenere componenti '..'."
 
 msgid "January"
-msgstr ""
+msgstr "Gennaio"
 
 msgid "July"
-msgstr ""
+msgstr "Luglio"
 
 msgid "June"
-msgstr ""
+msgstr "Giugno"
 
 msgid "Last Log"
-msgstr ""
+msgstr "Ultimo log"
 
 msgid "Last Run"
-msgstr ""
+msgstr "Ultima esecuzione"
 
 msgid ""
-"Legacy option, superseded by Apprise. Script or command called instead of "
-"the default email. SUBJECT and BODY are passed as parameters. Runs as root —"
-" enter only trusted commands."
+"Legacy option, superseded by Apprise. Absolute path to an executable script "
+"called instead of the default email. SUBJECT and BODY are passed as "
+"parameters."
 msgstr ""
 
 msgid "Log SMART data"
-msgstr ""
+msgstr "Registra dati SMART nei log"
 
 msgid "Log SnapRAID status"
-msgstr ""
+msgstr "Registra stato SnapRAID nei log"
 
 msgid "Log retention (days)"
-msgstr ""
+msgstr "Conservazione dei log (giorni)"
 
 msgid "Manage Docker containers / services"
-msgstr ""
+msgstr "Gestisci container / servizi Docker"
 
 msgid "March"
-msgstr ""
+msgstr "Marzo"
 
 msgid "May"
-msgstr ""
+msgstr "Maggio"
 
 msgid "Minute"
-msgstr ""
+msgstr "Minuto"
 
 msgid "Monday"
-msgstr ""
+msgstr "Lunedì"
 
 msgid "Month"
-msgstr ""
+msgstr "Mese"
 
 msgid "Monthly"
-msgstr ""
+msgstr "Mensile"
 
 msgid ""
 "No SnapRAID array selected. Please edit the config and choose an array."
 msgstr ""
+"Nessun array SnapRAID selezionato. Modificare la configurazione e scegliere "
+"un array."
 
 msgid "November"
-msgstr ""
+msgstr "Novembre"
 
 msgid ""
 "Number of times a threshold warning is issued before forcing a sync anyway. "
 "0 = always force, -1 = never force."
 msgstr ""
+"Numero di volte in cui viene emesso un avviso di soglia prima di forzare "
+"comunque la sincronizzazione. 0 = forza sempre, -1 = non forza mai."
 
 msgid "October"
-msgstr ""
+msgstr "Ottobre"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 msgid ""
 "Only change if using a self-hosted Healthchecks.io instance. Must include "
 "the trailing slash."
 msgstr ""
+"Modificare solo se si utilizza un'istanza di Healthchecks.io ospitata "
+"autonomamente. Deve includere lo slash finale."
 
 msgid "Only scrub blocks that have not been verified in the last N days."
 msgstr ""
+"Esegui lo scrub solo dei blocchi che non sono stati verificati negli ultimi "
+"N giorni."
 
 msgid "Pause / unpause"
-msgstr ""
+msgstr "Pausa / riprendi"
 
 msgid "Percentage of the array to verify per run."
-msgstr ""
+msgstr "Percentuale dell'array da verificare per ogni esecuzione."
 
 msgid "Pre-hash data"
-msgstr ""
+msgstr "Pre-hashing dei dati"
 
 msgid ""
 "Read data twice before syncing to detect silent read errors. Recommended."
 msgstr ""
+"Legge i dati due volte prima di sincronizzare per rilevare errori di lettura"
+" silenziosi. Consigliato."
 
 msgid "Receiver address"
-msgstr ""
+msgstr "Indirizzo del destinatario"
 
 msgid ""
 "Reports script errors to Healthchecks.io. Any warning will be reported as a "
 "failure."
 msgstr ""
+"Segnala gli errori dello script a Healthchecks.io. Qualsiasi avviso verrà "
+"segnalato come errore."
 
 msgid "Run Now"
-msgstr ""
+msgstr "Esegui ora"
 
 msgid "Run Now ..."
-msgstr ""
+msgstr "Esegui ora..."
 
 msgid "Run SnapRAID status after each sync and include the output in the log."
 msgstr ""
+"Esegui lo stato di SnapRAID dopo ogni sincronizzazione e includi l'output "
+"nel log."
 
 msgid "Run SnapRAID's SMART check and include the output in the log."
-msgstr ""
+msgstr "Esegui il controllo SMART di SnapRAID e includi l'output nel log."
 
 msgid "Run after-hook before spindown"
-msgstr ""
+msgstr "Esegui il post-hook prima dello spindown dei dischi"
 
 msgid "Run scrub only every N script executions. 0 = scrub every time."
 msgstr ""
+"Esegui lo scrub solo ogni N esecuzioni dello script. 0 = esegui lo scrub "
+"ogni volta."
 
 msgid "Run the after hook before spinning down disks instead of after."
-msgstr ""
+msgstr "Esegue il post-hook prima di spegnere i dischi anziché dopo."
 
 msgid "Saturday"
-msgstr ""
+msgstr "Sabato"
 
 msgid "Schedule"
-msgstr ""
+msgstr "Pianificazione"
 
 msgid "Scheduled"
-msgstr ""
+msgstr "Pianificato"
 
 msgid "Scrub age (days)"
-msgstr ""
+msgstr "Età di scrub (giorni)"
 
 msgid "Scrub delayed run"
-msgstr ""
+msgstr "Esecuzione ritardata dello scrub"
 
 msgid "Scrub new blocks after sync"
-msgstr ""
+msgstr "Esegui lo scrub dei nuovi blocchi dopo la sincronizzazione"
 
 msgid "Scrub percentage"
-msgstr ""
+msgstr "Percentuale di scrub"
 
 msgid "Scrub settings"
-msgstr ""
+msgstr "Impostazioni dello scrub"
 
 msgid "Send email on completion"
-msgstr ""
+msgstr "Invia email al completamento"
 
 msgid "Sender address"
-msgstr ""
+msgstr "Indirizzo del mittente"
 
 msgid "Sending Apprise email test ..."
-msgstr ""
+msgstr "Invio email di test Apprise in corso..."
 
 msgid "Sending Apprise test notification ..."
-msgstr ""
+msgstr "Invio notifica di test Apprise in corso..."
 
 msgid ""
 "Sends the report via the email address configured in OMV's notification "
 "settings."
 msgstr ""
+"Invia il rapporto tramite l'indirizzo email configurato nelle impostazioni "
+"di notifica di OMV."
 
 msgid "September"
-msgstr ""
+msgstr "Settembre"
 
 msgid ""
 "Shell command or script path. Runs as root after SnapRAID operations "
 "complete — enter only trusted commands."
 msgstr ""
+"Comando shell o percorso dello script. Viene eseguito come root al "
+"completamento delle operazioni di SnapRAID — inserire solo comandi "
+"attendibili."
 
 msgid ""
 "Shell command or script path. Runs as root before SnapRAID operations start "
 "— enter only trusted commands."
 msgstr ""
+"Comando shell o percorso dello script. Viene eseguito come root prima "
+"dell'avvio delle operazioni di SnapRAID — inserire solo comandi attendibili."
 
 msgid "SnapRAID AIO"
-msgstr ""
+msgstr "SnapRAID AIO"
 
 msgid "SnapRAID array"
-msgstr ""
+msgstr "Array SnapRAID"
 
 msgid "SnapRAID log directory"
-msgstr ""
+msgstr "Directory dei log di SnapRAID"
 
 msgid "SnapRAID options"
-msgstr ""
+msgstr "Opzioni SnapRAID"
 
 msgid "SnapRAID skips zero-sized files by default. Enable to include them."
 msgstr ""
+"Per impostazione predefinita, SnapRAID salta i file di dimensione zero. "
+"Abilitare per includerli."
 
 msgid "SnapRAID-AIO"
-msgstr ""
+msgstr "SnapRAID-AIO"
 
 msgid ""
 "Spin down disks after the script completes using hd-idle. hd-idle is not "
@@ -491,90 +566,100 @@ msgid ""
 "for-automatic-disk-spindown' target='_blank'>installation instructions</a> "
 "before enabling this option."
 msgstr ""
+"Spegne i dischi al completamento dello script utilizzando hd-idle. hd-idle "
+"non è installato automaticamente — consultare le <a "
+"href='https://github.com/auanasgheps/snapraid-aio-script#installing-hd-idle-"
+"for-automatic-disk-spindown' target='_blank'>istruzioni di installazione</a>"
+" prima di abilitare questa opzione."
 
 msgid "Spin down disks when done"
-msgstr ""
+msgstr "Spegni i dischi al termine"
 
 msgid "Stop / restart"
-msgstr ""
+msgstr "Arresta / riavvia"
 
 msgid ""
 "Stop or pause the selected Docker containers before SnapRAID runs and "
 "restart or unpause them when done. Prevents open file conflicts during sync."
 msgstr ""
+"Arresta o metti in pausa i container Docker selezionati prima "
+"dell'esecuzione di SnapRAID e riavviali o riattivali al termine. Previene "
+"conflitti sui file aperti durante la sincronizzazione."
 
 msgid "Sunday"
-msgstr ""
+msgstr "Domenica"
 
 msgid "Sync"
-msgstr ""
+msgstr "Sincronizza"
 
 msgid "Sync ..."
-msgstr ""
+msgstr "Sincronizzazione..."
 
 msgid "Sync thresholds"
-msgstr ""
+msgstr "Soglie di sincronizzazione"
 
 msgid "Sync warning threshold"
-msgstr ""
+msgstr "Soglia di avviso di sincronizzazione"
 
 msgid "Sync zero-sized files"
-msgstr ""
+msgstr "Sincronizza file di dimensione zero"
 
 msgid "Test Apprise"
-msgstr ""
+msgstr "Testa Apprise"
 
 msgid "Test Apprise email"
-msgstr ""
+msgstr "Testa email Apprise"
 
 msgid "Thursday"
-msgstr ""
+msgstr "Giovedì"
 
 msgid "Time of execution"
-msgstr ""
+msgstr "Ora di esecuzione"
 
 msgid "Tools"
-msgstr ""
+msgstr "Strumenti"
 
 msgid "Tuesday"
-msgstr ""
+msgstr "Martedì"
 
 msgid ""
 "UUID only, e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Do not paste the full "
 "ping URL — the base URL is added automatically."
 msgstr ""
+"Solo UUID, ad es. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Non incollare l'URL "
+"di ping completo — l'URL di base viene aggiunto automaticamente."
 
 msgid "Update threshold"
-msgstr ""
+msgstr "Soglia di aggiornamento"
 
 msgid "Updated schedule."
-msgstr ""
+msgstr "Pianificazione aggiornata."
 
 msgid ""
 "Uses Apprise to send email. Does not require the Apprise feature above. See "
 "the <a href='https://appriseit.com/services/email/' target='_blank'>Apprise "
 "email documentation</a> for SMTP and provider setup. Apprise is not pre-"
 "installed — if missing, it will be installed automatically via pipx on the "
-"first run. An internet connection is required at that point."
+"first test or run. An internet connection is required at that point."
 msgstr ""
 
 msgid "Verbose output in notification"
-msgstr ""
+msgstr "Output dettagliato nella notifica"
 
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercoledì"
 
 msgid "Weekly"
-msgstr ""
+msgstr "Settimanale"
 
 msgid "Yearly"
-msgstr ""
+msgstr "Annuale"
 
 msgid "not installed"
-msgstr ""
+msgstr "non installato"
 
 msgid "running"
-msgstr ""
+msgstr "in esecuzione"
 
 msgid "stopped"
-msgstr ""
+msgstr "arrestato"

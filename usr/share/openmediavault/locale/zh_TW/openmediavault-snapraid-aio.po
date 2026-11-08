@@ -3,13 +3,17 @@
 # This file is distributed under the same license as the openmediavault-snapraid-aio package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# kochin <kochinc@outlook.com>, 2026
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: openmediavault-snapraid-aio\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 10:45+0000\n"
+"POT-Creation-Date: 2026-11-08 22:30+0000\n"
 "PO-Revision-Date: 2026-08-20 10:47+0000\n"
+"Last-Translator: kochin <kochinc@outlook.com>, 2026\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/openmediavault-plugin-developers/teams/1854/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,25 +22,25 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "/etc/snapraid does not exist!"
-msgstr ""
+msgstr "/etc/snapraid 不存在！"
 
 msgid "AIO config file not found. Please apply settings first."
-msgstr ""
+msgstr "找不到 AIO 設置檔案。請先將設定套用。"
 
 msgid ""
 "Abort sync if more than N files were deleted since last run. 0 disables."
-msgstr ""
+msgstr "若自從上次執行，有超過 N 檔案被刪除，則中止同步。0 表示停用此選項。"
 
 msgid ""
 "Abort sync if more than N files were updated since last run. 0 disables."
-msgstr ""
+msgstr "若自從上次執行，有超過 N 檔案被更新，則中止同步。0 表示停用此選項。"
 
 msgid ""
 "Absolute path to the directory for log files. Leave empty to use /root."
-msgstr ""
+msgstr "指向日誌檔案所用目錄之絕對路徑。留空白則使用 /root。"
 
 msgid "Add/Delete ratio threshold"
-msgstr ""
+msgstr "新增/刪除比率定限"
 
 msgid ""
 "Advanced. Space-separated glob patterns to exclude from diff counts. Misuse "
@@ -44,30 +48,34 @@ msgid ""
 "configuration for files that change often. Example&colon; *.tmp /var/cache/*"
 " */backup/*"
 msgstr ""
+"進階設定。以空格分隔的 glob 型樣，用於排除在差異計數之外。誤用會導致奇偶校驗不同步且無警告 — 對於經常更改的文件，請使用 SnapRAID "
+"的排除設置。例如：*.tmp /var/cache/* */backup/*"
 
 msgid "After hook command"
-msgstr ""
+msgstr "事後掛鉤指令"
 
 msgid "After hook name"
-msgstr ""
+msgstr "事後指令掛鉤名稱"
 
 msgid ""
 "Allow sync even if delete threshold is exceeded, if enough files were also "
 "added. 0 disables. Range&colon; 0.0–1.0. Example&colon; 0.76 means at least "
 "76% of deleted files must have a matching add."
 msgstr ""
+"即使刪除定限被超過，只要同時添加了足夠的檔案，則允許同步。0 表示停用。數值範圍：0.0–1.0。例如：0.76 表示至少 76% "
+"的已刪除檔案必須有相符數目的新增檔案。"
 
 msgid "Apprise Email Notifications"
-msgstr ""
+msgstr "Apprise 電子郵件通知"
 
 msgid "Apprise Email URL"
-msgstr ""
+msgstr "Apprise 電子郵件 URL"
 
 msgid "Apprise Notifications"
-msgstr ""
+msgstr "Apprise 通知"
 
 msgid "Apprise URLs"
-msgstr ""
+msgstr "Apprise URLs"
 
 msgid ""
 "Apprise can send notifications to Telegram, Discord, Slack, Gotify, and many"
@@ -75,8 +83,8 @@ msgid ""
 "when a warning is issued. See the <a href='https://appriseit.com/services/' "
 "target='_blank'>supported services list</a> for all available integrations. "
 "Apprise is not pre-installed — if missing, it will be installed "
-"automatically via pipx on the first run. An internet connection is required "
-"at that point."
+"automatically via pipx on the first test or run. An internet connection is "
+"required at that point."
 msgstr ""
 
 msgid ""
@@ -84,140 +92,144 @@ msgid ""
 "href='https://appriseit.com/services/email/' target='_blank'>Apprise email "
 "documentation</a> for SMTP and provider URL format examples."
 msgstr ""
+"Apprise 電子郵件 URL。請參見 <a href='https://appriseit.com/services/email/' "
+"target='_blank'>Apprise 電子郵件說明文件</a> 中 SMTP 和服務提供者 URL 格式範例。"
 
 msgid "Apprise email test sent. Check your inbox."
-msgstr ""
+msgstr "Apprise 測試電子郵件已發送。請查看您的收件信箱。"
 
 msgid "Apprise test notification sent. Check your configured services."
-msgstr ""
+msgstr "Apprise 測試通知已發送。請查看您所設置的服務。"
 
 msgid "April"
-msgstr ""
+msgstr "四月"
 
 msgid ""
 "Are you sure you want to force a sync? This bypasses the delete and update "
 "thresholds."
-msgstr ""
+msgstr "您確定要做強制同步嗎？這會繞過刪除與更新的定限。"
 
 msgid "Array"
-msgstr ""
+msgstr "陣列"
 
 msgid "At reboot"
-msgstr ""
+msgstr "重新啟動時"
 
 msgid "Attach report on warnings"
-msgstr ""
+msgstr "發生警告時附上報告"
 
 msgid "Attach the full report to the email when a warning is issued."
-msgstr ""
+msgstr "當有警告發生時，把完整報告附在電子郵件內。"
 
 msgid ""
 "Attach the full report to the notification when a warning is issued. Not all"
 " services support attachments."
-msgstr ""
+msgstr "當有警告發生時，把完整報告附在通知內。並非所有的服務都支援附件功能。"
 
 msgid "August"
-msgstr ""
+msgstr "八月"
 
 msgid "Before hook command"
-msgstr ""
+msgstr "事前掛鉤指令"
 
 msgid "Before hook name"
-msgstr ""
+msgstr "事前指令掛鉤名稱"
 
 msgid ""
 "Before scheduling, make sure the array has been synced at least once. Use "
 "Tools → Sync to perform the initial sync for a new array."
-msgstr ""
+msgstr "建立預定工作前，先確認陣列至少已經被同步一次。使用 工具 → 同步 來執行新陣列的初始同步。"
 
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 msgid "Comment"
-msgstr ""
+msgstr "註釋"
 
 msgid "Config File"
-msgstr ""
+msgstr "設置檔案"
 
 msgid "Configs"
-msgstr ""
+msgstr "設置"
 
 msgid ""
 "Containers to stop or pause before SnapRAID runs. All selected containers "
 "are stopped or paused together."
-msgstr ""
+msgstr "在 SnapRAID 執行之前，要停止或暫停的容器。所有被選擇之容器會被一起停止或暫停。"
 
 msgid "Create"
-msgstr ""
+msgstr "新建"
 
 msgid "Created config."
-msgstr ""
+msgstr "已建立設置。"
 
 msgid "Custom hooks"
-msgstr ""
+msgstr "客製指令掛鉤"
 
 msgid "Custom notification hook"
-msgstr ""
+msgstr "客製通知掛鉤"
 
 msgid "Custom schedule"
-msgstr ""
+msgstr "客製預定工作"
 
 msgid "Daily"
-msgstr ""
+msgstr "每日"
 
 msgid "Day of month"
-msgstr ""
+msgstr "當月何日"
 
 msgid "Day of week"
-msgstr ""
+msgstr "當週何日"
 
-msgid "Days to keep log files. 0 keeps logs forever."
+msgid ""
+"Days to keep log files. 0 disables saving log files, which also disables the"
+" Last Log tool."
 msgstr ""
 
 msgid "December"
-msgstr ""
+msgstr "十二月"
 
 msgid "Delete threshold"
-msgstr ""
+msgstr "刪除定限"
 
 msgid "Display name shown in the log output."
-msgstr ""
+msgstr "在日誌輸出中顯示的名稱。"
 
 msgid "Docker and service management"
-msgstr ""
+msgstr "Docker 及服務管理"
 
 msgid "Docker container list"
-msgstr ""
+msgstr "Docker 容器列表"
 
 msgid "Docker mode"
-msgstr ""
+msgstr "Docker 模式"
 
 msgid "Edit"
-msgstr ""
+msgstr "編輯"
 
 msgid "Edit config."
-msgstr ""
+msgstr "編輯設置。"
 
 msgid "Email Notifications"
-msgstr ""
+msgstr "電子郵件通知"
 
 msgid "Enable"
-msgstr ""
+msgstr "啟用"
 
 msgid "Enable Apprise"
-msgstr ""
+msgstr "啟用 Apprise"
 
 msgid "Enable Apprise email"
-msgstr ""
+msgstr "啟用 Apprise 電子郵件"
 
 msgid "Enable Healthchecks.io"
-msgstr ""
+msgstr "啟用 Healthchecks.io"
 
 msgid "Enable custom hooks"
-msgstr ""
+msgstr "啟用客製指令掛鉤"
 
 msgid "Enable email notifications"
-msgstr ""
+msgstr "啟用電子郵件通知"
 
 msgid ""
 "Enter each Apprise URL and press Enter to add it. Multiple services are "
@@ -225,264 +237,269 @@ msgid ""
 "target='_blank'>Apprise services page</a> for URL format and configuration "
 "examples."
 msgstr ""
+"輸入每個 Apprise URL 並按 Enter 鍵來加入。支援多種服務。請參閱 <a "
+"href='https://appriseit.com/services/' target='_blank'>Apprise 服務網頁</a> 有關 "
+"URL 格式和設置範例。"
 
 msgid "Every day"
-msgstr ""
+msgstr "每日"
 
 msgid "Every month"
-msgstr ""
+msgstr "每月"
 
 msgid "February"
-msgstr ""
+msgstr "二月"
 
 msgid ""
 "For full documentation and configuration reference, see the <a "
 "href='https://github.com/auanasgheps/snapraid-aio-script' "
 "target='_blank'>SnapRAID AIO Script project page</a>."
 msgstr ""
+"完整說明文件和設置參考資料，請見 <a href='https://github.com/auanasgheps/snapraid-aio-"
+"script' target='_blank'>SnapRAID AIO 教本程式專案網頁</a>。"
 
 msgid "Force Sync"
-msgstr ""
+msgstr "強制同步"
 
 msgid "Force Sync ..."
-msgstr ""
+msgstr "強制同步 ..."
 
 msgid "Friday"
-msgstr ""
+msgstr "週五"
 
 msgid "Healthchecks URL"
-msgstr ""
+msgstr "Healthchecks URL"
 
 msgid "Healthchecks UUID"
-msgstr ""
+msgstr "Healthchecks UUID"
 
 msgid "Healthchecks.io"
-msgstr ""
+msgstr "Healthchecks.io"
 
 msgid "Hour"
-msgstr ""
+msgstr "時"
 
 msgid "Hourly"
-msgstr ""
+msgstr "每小時"
 
 msgid ""
 "If the array list is empty, configure an array using the SnapRAID plugin "
 "first, then return here."
-msgstr ""
+msgstr "若陣列列表為空白，請先使用 SnapRAID 插件設置一個陣列，然後再回到此處。"
 
 msgid "Ignore pattern"
-msgstr ""
+msgstr "忽略型樣"
 
 msgid ""
 "Immediately scrub newly synced blocks after each sync run. Increases runtime"
 " but catches errors on new data sooner."
-msgstr ""
+msgstr "每次同步後立即清理新同步的資料塊。會增加執行時間，但能更快地捕捉新資料上的錯誤。"
 
 msgid "Include SMART data in notification"
-msgstr ""
+msgstr "在通知內包含 SMART 資料"
 
 msgid ""
 "Include full SnapRAID output in the notification. Not recommended — may "
 "produce very large messages."
-msgstr ""
+msgstr "在通知中包含完整的 SnapRAID 輸出。不建議啟用 — 可能會產生非常大量的訊息。"
 
 msgid "Include status in notification"
-msgstr ""
+msgstr "在通知內包含狀況"
 
 msgid ""
 "Invalid log directory: path must be absolute and contain no '..' components."
-msgstr ""
+msgstr "無效的日誌目錄：路徑必須是絕對路徑，且不能包含 '..' 部分。"
 
 msgid "January"
-msgstr ""
+msgstr "一月"
 
 msgid "July"
-msgstr ""
+msgstr "七月"
 
 msgid "June"
-msgstr ""
+msgstr "六月"
 
 msgid "Last Log"
-msgstr ""
+msgstr "最後日誌"
 
 msgid "Last Run"
-msgstr ""
+msgstr "最後執行"
 
 msgid ""
-"Legacy option, superseded by Apprise. Script or command called instead of "
-"the default email. SUBJECT and BODY are passed as parameters. Runs as root —"
-" enter only trusted commands."
+"Legacy option, superseded by Apprise. Absolute path to an executable script "
+"called instead of the default email. SUBJECT and BODY are passed as "
+"parameters."
 msgstr ""
 
 msgid "Log SMART data"
-msgstr ""
+msgstr "日誌記錄 SMART 資料"
 
 msgid "Log SnapRAID status"
-msgstr ""
+msgstr "日誌記錄 SnapRAID 狀況"
 
 msgid "Log retention (days)"
-msgstr ""
+msgstr "日誌留存 (日數)"
 
 msgid "Manage Docker containers / services"
-msgstr ""
+msgstr "管理 Docker 容器 / 服務"
 
 msgid "March"
-msgstr ""
+msgstr "三月"
 
 msgid "May"
-msgstr ""
+msgstr "五月"
 
 msgid "Minute"
-msgstr ""
+msgstr "分"
 
 msgid "Monday"
-msgstr ""
+msgstr "週一"
 
 msgid "Month"
-msgstr ""
+msgstr "月"
 
 msgid "Monthly"
-msgstr ""
+msgstr "每月"
 
 msgid ""
 "No SnapRAID array selected. Please edit the config and choose an array."
-msgstr ""
+msgstr "未選擇 SnapRAID 陣列。請編輯設置並選擇一個陣列。"
 
 msgid "November"
-msgstr ""
+msgstr "十一月"
 
 msgid ""
 "Number of times a threshold warning is issued before forcing a sync anyway. "
 "0 = always force, -1 = never force."
-msgstr ""
+msgstr "在強制同步之前，發出定限警告的次數。 0 = 始終強制同步，-1 = 從不強制同步。"
 
 msgid "October"
-msgstr ""
+msgstr "十月"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 msgid ""
 "Only change if using a self-hosted Healthchecks.io instance. Must include "
 "the trailing slash."
-msgstr ""
+msgstr "只有在使用自己架設的 Healthchecks.io 實體時才需要變更。必須包含末尾的斜線。"
 
 msgid "Only scrub blocks that have not been verified in the last N days."
-msgstr ""
+msgstr "僅清理最近 N 天內尚未驗證過的區塊。"
 
 msgid "Pause / unpause"
-msgstr ""
+msgstr "暫停 / 取消暫停"
 
 msgid "Percentage of the array to verify per run."
-msgstr ""
+msgstr "每次執行要查核陣列的百分比。"
 
 msgid "Pre-hash data"
-msgstr ""
+msgstr "初步雜湊資料"
 
 msgid ""
 "Read data twice before syncing to detect silent read errors. Recommended."
-msgstr ""
+msgstr "同步前讀取資料兩次，以偵測靜默讀取錯誤。建議啟用。"
 
 msgid "Receiver address"
-msgstr ""
+msgstr "收件人地址"
 
 msgid ""
 "Reports script errors to Healthchecks.io. Any warning will be reported as a "
 "failure."
-msgstr ""
+msgstr "將腳本程式的錯誤回報給 Healthchecks.io。任何警告都會被報告為失敗。"
 
 msgid "Run Now"
-msgstr ""
+msgstr "立即執行"
 
 msgid "Run Now ..."
-msgstr ""
+msgstr "立即執行 ..."
 
 msgid "Run SnapRAID status after each sync and include the output in the log."
-msgstr ""
+msgstr "每次同步後執行 SnapRAID 狀況命令，並將輸出包含在日誌中。"
 
 msgid "Run SnapRAID's SMART check and include the output in the log."
-msgstr ""
+msgstr "執行 SnapRAID 的 SMART 檢查並將輸出包含在日誌中。"
 
 msgid "Run after-hook before spindown"
-msgstr ""
+msgstr "在停止轉動前，執行事後指令掛鉤"
 
 msgid "Run scrub only every N script executions. 0 = scrub every time."
-msgstr ""
+msgstr "僅在每 N 次腳本程式執行時，做清理作業。0 = 每次都清理。"
 
 msgid "Run the after hook before spinning down disks instead of after."
-msgstr ""
+msgstr "於停止轉動之前，而非之後，執行事後指令掛鉤。"
 
 msgid "Saturday"
-msgstr ""
+msgstr "週六"
 
 msgid "Schedule"
-msgstr ""
+msgstr "預定"
 
 msgid "Scheduled"
-msgstr ""
+msgstr "已預定"
 
 msgid "Scrub age (days)"
-msgstr ""
+msgstr "清理年齡 (日數)"
 
 msgid "Scrub delayed run"
-msgstr ""
+msgstr "延遲執行清理"
 
 msgid "Scrub new blocks after sync"
-msgstr ""
+msgstr "同步後清理新區塊"
 
 msgid "Scrub percentage"
-msgstr ""
+msgstr "清理百分比"
 
 msgid "Scrub settings"
-msgstr ""
+msgstr "清理設定"
 
 msgid "Send email on completion"
-msgstr ""
+msgstr "完成時送出電子郵件"
 
 msgid "Sender address"
-msgstr ""
+msgstr "寄件人地址"
 
 msgid "Sending Apprise email test ..."
-msgstr ""
+msgstr "傳送 Apprise 電子郵件測試中 ..."
 
 msgid "Sending Apprise test notification ..."
-msgstr ""
+msgstr "傳送 Apprise 測試通知中 ..."
 
 msgid ""
 "Sends the report via the email address configured in OMV's notification "
 "settings."
-msgstr ""
+msgstr "將報告經由設置於 OMV 通知設定的電子郵件地址發送。"
 
 msgid "September"
-msgstr ""
+msgstr "九月"
 
 msgid ""
 "Shell command or script path. Runs as root after SnapRAID operations "
 "complete — enter only trusted commands."
-msgstr ""
+msgstr "Shell 指令或腳本程式路徑。在 SnapRAID 作業完成後以 root 使用者身分執行 — 請只輸入可信任指令。"
 
 msgid ""
 "Shell command or script path. Runs as root before SnapRAID operations start "
 "— enter only trusted commands."
-msgstr ""
+msgstr "Shell 指令或腳本程式路徑。在 SnapRAID 作業開始前以 root 使用者身分執行 — 請只輸入可信任指令。"
 
 msgid "SnapRAID AIO"
-msgstr ""
+msgstr "SnapRAID AIO"
 
 msgid "SnapRAID array"
-msgstr ""
+msgstr "SnapRAID 陣列"
 
 msgid "SnapRAID log directory"
-msgstr ""
+msgstr "SnapRAID 日誌檔案目錄"
 
 msgid "SnapRAID options"
-msgstr ""
+msgstr "SnapRAID 選項"
 
 msgid "SnapRAID skips zero-sized files by default. Enable to include them."
-msgstr ""
+msgstr "SnapRAID 預設會跳過大小為零的檔案。啟用此選項會包含這些檔案。"
 
 msgid "SnapRAID-AIO"
-msgstr ""
+msgstr "SnapRAID-AIO"
 
 msgid ""
 "Spin down disks after the script completes using hd-idle. hd-idle is not "
@@ -491,90 +508,96 @@ msgid ""
 "for-automatic-disk-spindown' target='_blank'>installation instructions</a> "
 "before enabling this option."
 msgstr ""
+"腳本程式運行完畢後，使用 hd-idle 將磁碟停止轉動。 hd-idle 並不會自被動安裝 — 啟用此選項前，請參閱 <a "
+"href='https://github.com/auanasgheps/snapraid-aio-script#installing-hd-idle-"
+"for-automatic-disk-spindown' target='_blank'>安裝說明</a>。"
 
 msgid "Spin down disks when done"
-msgstr ""
+msgstr "完成時將磁碟停止轉動"
 
 msgid "Stop / restart"
-msgstr ""
+msgstr "停止 / 重啟"
 
 msgid ""
 "Stop or pause the selected Docker containers before SnapRAID runs and "
 "restart or unpause them when done. Prevents open file conflicts during sync."
 msgstr ""
+"在 SnapRAID 運作之前停止或暫停所選定的 Docker 容器，並在完成後將這些容器重新啟動或取消暫停。以免同步過程中出現檔案仍開啟的衝突。"
 
 msgid "Sunday"
-msgstr ""
+msgstr "週日"
 
 msgid "Sync"
-msgstr ""
+msgstr "同步"
 
 msgid "Sync ..."
-msgstr ""
+msgstr "同步 ..."
 
 msgid "Sync thresholds"
-msgstr ""
+msgstr "同步定限"
 
 msgid "Sync warning threshold"
-msgstr ""
+msgstr "同步警告定限"
 
 msgid "Sync zero-sized files"
-msgstr ""
+msgstr "同步大小為零之檔案"
 
 msgid "Test Apprise"
-msgstr ""
+msgstr "測試 Apprise"
 
 msgid "Test Apprise email"
-msgstr ""
+msgstr "測試 Apprise 電子郵件"
 
 msgid "Thursday"
-msgstr ""
+msgstr "週四"
 
 msgid "Time of execution"
-msgstr ""
+msgstr "執行時間"
 
 msgid "Tools"
-msgstr ""
+msgstr "工具"
 
 msgid "Tuesday"
-msgstr ""
+msgstr "週二"
 
 msgid ""
 "UUID only, e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Do not paste the full "
 "ping URL — the base URL is added automatically."
 msgstr ""
+"僅輸入 UUID，例如：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx。不要貼入完整 ping URL — 基底 URL "
+"會被自動加入。"
 
 msgid "Update threshold"
-msgstr ""
+msgstr "更新定限"
 
 msgid "Updated schedule."
-msgstr ""
+msgstr "已更新預定工作"
 
 msgid ""
 "Uses Apprise to send email. Does not require the Apprise feature above. See "
 "the <a href='https://appriseit.com/services/email/' target='_blank'>Apprise "
 "email documentation</a> for SMTP and provider setup. Apprise is not pre-"
 "installed — if missing, it will be installed automatically via pipx on the "
-"first run. An internet connection is required at that point."
+"first test or run. An internet connection is required at that point."
 msgstr ""
 
 msgid "Verbose output in notification"
-msgstr ""
+msgstr "通知內含詳細輸出"
 
 msgid "Wednesday"
-msgstr ""
+msgstr "週三"
 
 msgid "Weekly"
-msgstr ""
+msgstr "每週"
 
 msgid "Yearly"
-msgstr ""
+msgstr "每年"
 
 msgid "not installed"
-msgstr ""
+msgstr "未安裝"
 
 msgid "running"
-msgstr ""
+msgstr "運行中"
 
 msgid "stopped"
-msgstr ""
+msgstr "已停止"
